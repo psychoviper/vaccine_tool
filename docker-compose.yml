@@ -1,0 +1,74 @@
+# services:
+#   web:
+#     build: .
+#     volumes:
+#       - .:/app
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - redis
+#       - celery_worker
+#     environment:
+#       - CELERY_BROKER_URL=redis://redis:6379/0
+#       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+#   redis:
+#     image: redis:latest
+#     ports:
+#       - "6379:6379"
+
+#   celery_worker:
+#     build: .
+#     volumes:
+#       - .:/app
+#     command: celery -A tasks worker --loglevel=info
+#     depends_on:
+#       - redis
+#     environment:
+#       - CELERY_BROKER_URL=redis://redis:6379/0
+#       - CELERY_RESULT_BACKEND=redis://redis:6379/0      
+
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - celery_worker
+      - celery_sequential_worker
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  # Default Celery Worker (Multiprocessing)
+  celery_worker:
+    build: .
+    volumes:
+      - .:/app
+    command: celery -A tasks worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  # Sequential Celery Worker (Processes tasks one at a time)
+  celery_sequential_worker:
+    build: .
+    volumes:
+      - .:/app
+    command: celery -A tasks worker --loglevel=info -Q sequential_queue --concurrency=1
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="3000">
+    <title>Step 4</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.10.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-iFYnumxmAfPWEvBBHVgQ1pcH7Bj9XLrhznQ6DpVFtF3dGwlEAqe4cmd4NY4cJALM" crossorigin="anonymous">    
+    <style>
+        * {
+            text-align: center;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1f1f1f;
+            color: #ddd;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header, footer {
+            background-color: #121212;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        header h1, footer p {
+            margin: 0;
+        }
+        footer a {
+            color: #ddd;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #66c0f4;
+        }
+        .timeline {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .timeline .step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            margin: 0 10px;
+        }
+        .timeline .completed {
+            background-color: #28a745;
+        }
+        .timeline .active {
+            background-color: yellow;
+        }
+        .card {
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            padding: 20px;
+            width: 60%;
+            margin:30px auto;
+        }
+        .btn-start {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border:none;
+            margin-top: 30px;
+        }
+        .btn-start:hover {
+            background-color: #0056b3;
+        }
+        .processing-btn {
+            background-color: #f39c12;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            padding: 15px 30px;
+            display: inline-block;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .processing-btn:hover {
+            background-color: #e67e22;
+        }
+        footer {
+            margin-top: auto;
+        }
+        .hidden {
+            display: none;
+        }
+        #btnSpecial {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            /* transition: background-color 0.3s; */
+            margin-top: 30px;
+            
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* Keyframes for shape animation */
+        @keyframes morphing {
+            0% { 
+                width: 200px; }
+            100% { width: 300px; }
+        }
+
+        /* Style when the button is processing */
+        #btnSpecial.processing {
+            position: relative;
+            overflow: hidden;
+            animation: morphing;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+            animation-direction: alternate;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> <a href="/" style="text-decoration: none; color: white;">Vaccine Design Automation Tool</a></h1>
+
+        <!-- <p>Step 5: Predicting B Cell Epitopes</p> -->
+    </header>
+
+    <div class="timeline">
+        <div class="step completed">1</div>
+        <div class="step completed">2</div>
+        <div class="step completed">3</div>
+        <div class="step active">4</div>
+        <div class="step">5</div>
+        <div class="step">6</div>
+        <div class="step">7</div>
+        <div class="step">8</div>
+        <div class="step">9</div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            {% if processing %}
+                <h4 style="color: white;">B Cell Prediction in progress. Please wait...</h4>
+                <button class="processing-btn">Processing...</button>
+            {% elif not file_processed %}
+                <h4 style="color: white;">B Cell Epitope Prediction.</h4>
+                <form action="/step4" method="POST">
+                    <h6 style="color: white;">ABC Pred Data</h6>
+                    <label for="threshold" style="color: white;">Select Threshold Value</label>
+                    <select name="threshold">
+                        {% for value in threshold %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="window" style="color: white;">Select Window Size</label>
+                    <select name="window">
+                        {% for value in window %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <h6 style="color: white;">Net CTL Data</h6>
+                    <label for="supertype" style="color: white;">Select Supertype</label>
+                    <select name="supertype">
+                        {% for value in supertype %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="c_terminal" style="color: white;">Weight on C-terminal cleavage:</label>
+                    <input type="number" id="c_terminal" name="c_terminal" step="0.01" value="0.15" ><br><br>
+                    
+                    <label for="tap_efficiency" style="color: white;">Weight on TAP transport efficiency:</label>
+                    <input type="number" id="tap_efficiency" name="tap_efficiency" step="0.01" value="0.05" ><br><br>
+                    
+                    <label for="threshold" style="color: white;">Threshold for epitope identification:</label>
+                    <input type="number" id="threshold" name="ctl_threshold" step="0.01" value="0.75" ><br><br>
+                    
+                    <h6 style="color: white;">Net MHC Data</h6>
+
+                    <label for="peptide" style="color: white;">Peptide length</label>
+                    <select class="form-multi-select" id='ms1' multiple data-coreui-search="true" name="peptide_length">
+                        {% for value in peptide_length %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="alleles" style="color: white;">Select Allele(s)</label>
+                    <select class="form-multi-select" id='ms1' multiple data-coreui-search="true" name="alleles">
+                        <optgroup label="HLA-A1">
+                            {% for value in hla_a1 %}
+                            <option value="{{ value }}">{{ value }}</option>
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="HLA-A2">
+                        {% for value in hla_a2 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="HLA-A11">
+                        {% for value in hla_a11 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="HLA-A23">
+                        {% for value in hla_a23 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="HLA-A24">
+                        {% for value in hla_a24 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                        </optgroup>
+                        <optgroup label="HLA-A25">
+                        {% for value in hla_a25 %}
+                            <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                        </optgroup>
+                        <optgroup label="HLA-A26">
+                        {% for value in hla_a26 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="HLA-A29">
+                        {% for value in hla_a29 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="HLA-A30">
+                        {% for value in hla_a30 %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="HLA-B">
+                        {% for value in hla_b %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+                
+                <label for="stability" style="color: white;">Threshold for strong binder: % Rank </label>
+                <input type="number" id="stringBinder" name="strongBinder" step="0.01" value="0.5" ><br><br>
+                
+                <label for="weight" style="color: white;">Threshold for weak binder: % Rank </label>
+                <input type="number" id="weakBinder" name="weakBinder" step="0.01" value="2.0" ><br><br>
+                
+                <label for="weight" style="color: white;">Filtering threshold for %Rank (leave -99 to print all)  </label>
+                <input type="number" id="filteringThreshold" name="filteringThreshold" step="0.1" value="-99" ><br><br>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="default" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Predict IFN Gamma
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="default" id="flexRadioDefault2" checked>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Proceed without IFN Gamma Prediction
+                    </label>
+                </div>
+                <h6 style="color: white;">Net MHC-II Data</h6>
+                
+                <label for="mhcii_peptide_length" style="color: white;">Peptide length</label>
+                <select class="form-multi-select" id='ms1' multiple data-coreui-search="true" name="mhcii_peptide_length">
+                    {% for value in peptide_length %}
+                    <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+
+            
+                <label for=mhcii_alleles" style="color: white;">Select Allele(s)</label>
+                <select class="form-multi-select" id='ms1' multiple data-coreui-search="true" name="mhcii_alleles">
+                    <optgroup label="DR">
+                    {% for value in DR %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                    </optgroup>
+                    <optgroup label="DP_alpha">
+                    {% for value in DP_alpha %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                    </optgroup>
+                    <optgroup label="DP_beta">
+                    {% for value in DP_beta %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                    </optgroup>
+                    <optgroup label="DQ_alpha">
+                    {% for value in DQ_alpha %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                    </optgroup>
+                    <optgroup label="DQ_beta">
+                    {% for value in DQ_beta %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                    </optgroup>
+                    <optgroup label="Mouse">
+                    {% for value in Mouse %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                    </optgroup>
+                </select>
+
+                    <label for="stability" style="color: white;">Threshold for strong binder: % Rank </label>
+                    <input type="number" id="stringBinder" name="mhcii_strongBinder" step="0.01" value="1.0" ><br><br>
+                    
+                    <label for="weight" style="color: white;">Threshold for weak binder: % Rank </label>
+                    <input type="number" id="weakBinder" name="mhcii_weakBinder" step="0.01" value="5.0" ><br><br>
+                    
+                    <button type="submit" class="btn-start"id="btnSpecial">Start Now</button>
+                </form>
+            {% else %}
+                <p style="color: green;">B Cell Epitope Prediction completed successfully! You can now download the results.</p>
+                <a href="{{ url_for('download', filename=bCell_filename)}}" class="btn-start" style="width: 300px; margin:auto; background-color: green;">Download B Cell Results</a>
+                <br><br>
+                <a href="{{ url_for('download', filename=filtered_filename) }}" class="btn-start" style="width: 300px; margin:auto; background-color: green;";>Download Filtered Epitopes</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="/step3" class="btn-start" style="width: 300px;">Back to Step 4</a>
+        {% if file_processed %}
+        <a href="/step5" class="btn-start" style="width: 300px; margin-left: 100px;">Proceed to Next Step</a>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Vaccine Design Automation. All rights reserved.</p>
+        <p><a href="https://github.com" target="_blank">GitHub</a> | <a href="mailto:contact@example.com">Contact</a></p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script></body>
+    <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.10.0/dist/js/coreui.bundle.min.js" integrity="sha384-vaeoe43yarg/Wh3n+r4/PYyWggBr7VzI5l/1UeGOtIN4cgSvWlyBeZ7DlBEukNeq" crossorigin="anonymous"></script>
+    
+</body>
+</html>

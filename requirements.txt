@@ -1,0 +1,12 @@
+quart
+celery
+redis
+aiohttp 
+bs4
+asyncio
+lxml
+pandas
+requests
+gevent
+uvicorn
+# greenlet
