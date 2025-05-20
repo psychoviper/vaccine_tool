@@ -1,0 +1,65 @@
+<form action="/submit-toxinpred" method="post" enctype="multipart/form-data">
+    <h2>Submit Peptide Sequence(s) for ToxinPred</h2>
+  
+    <!-- Sequence Input -->
+    <label for="sequence">Type or paste peptide sequence(s) in single letter code (FASTA format):</label><br>
+    <textarea id="sequence" name="sequence" rows="6" cols="70" placeholder=">Peptide1\nACDEFGHIK..."></textarea><br><br>
+  
+    <!-- OR File Upload -->
+    <strong>OR</strong><br>
+    <label for="sequenceFile">Submit sequence file:</label>
+    <input type="file" id="sequenceFile" name="sequenceFile" accept=".txt,.fasta"><br><br>
+  
+    <!-- SVM Method -->
+    <label><strong>Either select SVM method:</strong></label><br>
+    <input type="radio" name="svmMethod" value="svm_swiss" id="svm_swiss">
+    <label for="svm_swiss">SVM (Swiss-Prot) based</label><br>
+  
+    <input type="radio" name="svmMethod" value="svm_swiss_motif" id="svm_swiss_motif">
+    <label for="svm_swiss_motif">SVM (Swiss-Prot) + Motif based</label><br>
+  
+    <input type="radio" name="svmMethod" value="svm_trembl" id="svm_trembl">
+    <label for="svm_trembl">SVM (TrEMBL) based</label><br>
+  
+    <input type="radio" name="svmMethod" value="svm_trembl_motif" id="svm_trembl_motif">
+    <label for="svm_trembl_motif">SVM (TrEMBL) + Motif based</label><br><br>
+  
+    <!-- OR QM Method -->
+    <label><strong>OR Select Quantitative Matrix (QM) method:</strong></label><br>
+    <input type="radio" name="qmMethod" value="mono_swiss" id="mono_swiss">
+    <label for="mono_swiss">Monopeptide (Swiss-Prot)</label><br>
+  
+    <input type="radio" name="qmMethod" value="mono_trembl" id="mono_trembl">
+    <label for="mono_trembl">Monopeptide (TrEMBL)</label><br>
+  
+    <input type="radio" name="qmMethod" value="di_swiss" id="di_swiss">
+    <label for="di_swiss">Dipeptide (Swiss-Prot)</label><br>
+  
+    <input type="radio" name="qmMethod" value="di_trembl" id="di_trembl">
+    <label for="di_trembl">Dipeptide (TrEMBL)</label><br><br>
+  
+    <!-- E-value Cutoff -->
+    <label for="evalue">Choose E-value cut-off for motif-based method:</label>
+    <input type="number" id="evalue" name="evalue" value="10" step="0.1"><br><br>
+  
+    <!-- SVM Threshold -->
+    <label for="threshold">Choose SVM threshold:</label>
+    <input type="number" id="threshold" name="threshold" value="0.0" step="0.1"><br><br>
+  
+    <!-- Physicochemical Properties -->
+    <label><strong>Physicochemical Properties to Be Displayed:</strong></label><br>
+    <input type="checkbox" name="properties" value="Hydrophobicity"> Hydrophobicity<br>
+    <input type="checkbox" name="properties" value="Sterichinderance"> Sterichinderance<br>
+    <input type="checkbox" name="properties" value="Side bulk"> Side bulk<br>
+    <input type="checkbox" name="properties" value="Hydropathicity"> Hydropathicity<br>
+    <input type="checkbox" name="properties" value="Amphipathicity"> Amphipathicity<br>
+    <input type="checkbox" name="properties" value="Hydrophilicity"> Hydrophilicity<br>
+    <input type="checkbox" name="properties" value="Net Hydrogen"> Net Hydrogen<br>
+    <input type="checkbox" name="properties" value="Charge"> Charge<br>
+    <input type="checkbox" name="properties" value="pI"> pI<br>
+    <input type="checkbox" name="properties" value="Molecular weight"> Molecular weight<br>
+    <input type="checkbox" name="properties" value="All"> All<br><br>
+  
+    <button type="submit">Submit</button>
+  </form>
+  

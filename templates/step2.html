@@ -194,6 +194,12 @@
                             <option value="{{ value }}" {% if value == 0.3 %}selected{% endif %}>{{ value }}</option>
                         {% endfor %}
                     </select>
+                    <label for="prediction_type" style="color: white;">Select a Target Organism</label>
+                    <select name="prediction_type">
+                        <option value="bacteria" selected>Bacteria</option>
+                        <option value="virus">Virus</option>
+                        <option value="tumor">Tumor</option>
+                    </select>
                     <button type="submit" class="btn-upload" id="btnSpecial">Start Now</button>
                 </form>
             {% elif processing %}

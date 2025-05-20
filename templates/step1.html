@@ -144,10 +144,9 @@
     <div class="container">
         <div class="card">
             <h4 style="color: white; text-align: center;">FASTA to CSV Conversion</h4>
-            {% if file_uploaded %}
-                <!-- <p style="color: white;">File uploaded successfully!</p> -->
-            {% endif %}
-            {% if file_converted %}
+            {% if error_message %}
+                <p style="color: white;">{{error_message}}</p>
+            {% elif file_converted %}
                 <p style="color: green;">File converted successfully!</p>
                 <a href="{{ url_for('download', filename=converted_filename) }}" class="btn-start" style="width: 200px; margin: auto; background-color: green;">Download CSV</a>
             {% else %}

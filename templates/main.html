@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BioPipeline - Vaccine Development Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Lora:wght@400;500;600&display=swap">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <h1>uniVax</h1>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a id="backToHome">Home</a></li>
+          <li><a href="#" id="navdocumentation">Documentation</a></li>
+          <!-- <li><a href="#" id="navdownloads">Downloads</a></li> -->
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- Pipeline Section -->
+      <section id="pipelineSection" class="section active">
+        <div class="section-header">
+          <h2>Vaccine Development Pipeline</h2>
+          <p>A streamlined platform for comprehensive vaccine development using advanced bioinformatics tools.</p>
+        </div>
+
+        <div class="workflow-container">
+          <div class="workflow-steps">
+            <div class="step active" data-step="1">
+              <div class="step-number">1</div>
+              <div class="step-label">Upload FASTA</div>
+            </div>
+            <div class="step" data-step="2">
+              <div class="step-number">2</div>
+              <div class="step-label">Sequence Analysis</div>
+            </div>
+            <div class="step" data-step="3">
+              <div class="step-number">3</div>
+              <div class="step-label">Epitope Prediction</div>
+            </div>
+            <div class="step" data-step="4">
+              <div class="step-number">4</div>
+              <div class="step-label">Vaccine Properties</div>
+            </div>
+            <div class="step" data-step="5">
+              <div class="step-number">5</div>
+              <div class="step-label">Final Results</div>
+            </div>
+          </div>
+
+          <div class="workflow-content">
+            <!-- Step 1: FASTA Upload -->
+            <section id="step1" class="step-content active">
+              <h2>Upload FASTA Sequence File</h2>
+              <p>Begin your vaccine development process by uploading a FASTA format file containing protein sequences.</p>
+              
+              <div class="upload-area" id="dropArea">
+                <div class="upload-icon"></div>
+                <p>Drag and drop your FASTA file here</p>
+                <p>or</p>
+                <label for="fasta-upload" class="btn primary">Browse Files</label>
+                <input type="file" id="fasta-upload" accept=".fasta,.fa,.txt" hidden>
+              </div>
+              
+              <div class="upload-status" id="uploadStatus" style="display: none;">
+                <div class="file-info">
+                  <span id="fileName">filename.fasta</span>
+                  <span id="fileSize">(23 KB)</span>
+                </div>
+                <button class="btn outline" id="removeFile">Remove</button>
+              </div>
+              
+              <div class="action-buttons">
+                <button class="btn primary" id="uploadSubmit" disabled>Continue to Sequence Analysis</button>
+              </div>
+            </section>
+            
+            <!-- Step 2: Sequence Analysis -->
+            <section id="step2" class="step-content">
+              <h2>Sequence Analysis</h2>
+              
+              <div class="sequence-info">
+                <div class="info-box">
+                  <h4>Uploaded Sequences</h4>
+                  <div class="sequence-count">
+                    <span id="sequenceCount">0</span>
+                    <span>sequences found</span>
+                  </div>
+                </div>
+                
+                <div class="sequence-range">
+                  <h4>Select Sequence Range for Analysis</h4>
+                  <div class="range-selector">
+                    <div class="range-input">
+                      <label for="startSequence">Start</label>
+                      <input type="number" id="startSequence" min="1" value="1">
+                    </div>
+                    <div class="range-input">
+                      <label for="endSequence">End</label>
+                      <input type="number" id="endSequence" min="1" value="0">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="multi-step-form">
+                <div class="substep-nav">
+                  <button class="substep-btn active" data-substep="2_1">AlgPred</button>
+                  <button class="substep-btn" data-substep="2_2">VaxiJen</button>
+                  <button class="substep-btn" data-substep="2_3">Phobius</button>
+                </div>
+                
+                <div class="substep-content">
+                  <!-- 2.1 AlgPred -->
+                  <div id="substep2_1" class="substep active">
+                    <h3>AlgPred Settings</h3>
+                    <div class="form-group">
+                      <label for="algpred-threshold">Threshold Value</label>
+                      <input type="range" id="algpred-threshold" min="0" max="1" step="0.01" value="0.5">
+                      <span id="algpred-threshold-value">0.5</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="algpred-method">Prediction Method</label>
+                      <select id="algpred-method">
+                        <option value="4">Hybrid (RF+BLAST+MERCI)</option>
+                        <option value="0">AAC based RF</option>
+                      </select>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline" id="goToStep1">Step 1</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 2.2 VaxiJen -->
+                  <div id="substep2_2" class="substep">
+                    <h3>VaxiJen Settings</h3>
+                    <div class="form-group">
+                      <label for="vaxijen-threshold">Antigen Threshold</label>
+                      <input type="range" id="vaxijen-threshold" min="0" max="1" step="0.01" value="0.4">
+                      <span id="vaxijen-threshold-value">0.4</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="vaxijen-target">Target Organism</label>
+                      <select id="vaxijen-target">
+                        <option value="bacteria">Bacteria</option>
+                        <option value="virus">Virus</option>
+                        <option value="parasite">Parasite</option>
+                        <option value="fungi">Fungi</option>
+                        <option value="tumor">Tumor</option>
+                      </select>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 2.3 Phobius -->
+                  <div id="substep2_3" class="substep">
+                    <h3>Phobius Settings</h3>
+                    <div class="form-group">
+                      <label for="phobius-method">Prediction Method</label>
+                      <select id="phobius-method">
+                        <option value="normal">Normal prediction</option>
+                        <option value="short">Short prediction</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="phobius-format">Output Format</label>
+                      <select id="phobius-format">
+                        <option value="short">Short</option>
+                        <option value="long">Long</option>
+                        <option value="plp">PLP</option>
+                      </select>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn primary" id="step2Submit">Submit for Analysis</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Results for Step 2 (hidden initially) -->
+              <div id="step2Results" class="results-container" style="display: none;">
+                <h3>Analysis Results</h3>
+                <div class="results-summary">
+                  <div class="result-card">
+                    <h4>AlgPred</h4>
+                    <div class="result-value"><span id="algpredPassCount">0</span> sequences</div>
+                    <div class="result-label">passed allergenicity test</div>
+                  </div>
+                  <div class="result-card">
+                    <h4>VaxiJen</h4>
+                    <div class="result-value"><span id="vaxijenPassCount">0</span> sequences</div>
+                    <div class="result-label">passed antigenicity test</div>
+                  </div>
+                  <div class="result-card">
+                    <h4>Phobius</h4>
+                    <div class="result-value"><span id="phobiusPassCount">0</span> sequences</div>
+                    <div class="result-label">passed transmembrane prediction</div>
+                  </div>
+                  <div class="result-card total">
+                    <h4>Total</h4>
+                    <div class="result-value"><span id="totalPassCount">0</span> sequences</div>
+                    <div class="result-label">passed all criteria</div>
+                  </div>
+                </div>
+                
+                <div class="action-buttons">
+                  <button class="btn secondary" id="downloadStep2">Download Results</button>
+                  <button class="btn primary" id="goToStep3">Continue to Epitope Prediction</button>
+                </div>
+              </div>
+              
+              <!-- Loading indicator (hidden initially) -->
+              <div id="loadingStep2" class="loading-container" style="display: none;">
+                <div class="loading-animation">
+                  <div class="dna-helix">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                  </div>
+                </div>
+                <h3>Processing Your Sequences</h3>
+                <p>Running AlgPred, VaxiJen, and Phobius analysis...</p>
+              </div>
+              
+              <!-- Error indicator (hidden initially) -->
+              <div id="errorStep2" class="error-container" style="display: none;">
+                <div class="error-icon"></div>
+                <h3>Analysis Error</h3>
+                <p id="errorMessage2">An error occurred during the analysis process.</p>
+                <div class="action-buttons">
+                  <button class="btn primary" id="retryStep2">Retry Analysis</button>
+                </div>
+              </div>
+            </section>
+            
+            <!-- Step 3: Epitope Prediction -->
+            <section id="step3" class="step-content">
+              <h2>Epitope Prediction</h2>
+              
+              <div class="multi-step-form">
+                <div class="substep-nav">
+                  <button class="substep-btn active" data-substep="3_1">ABCPred</button>
+                  <button class="substep-btn" data-substep="3_2">NetCTL</button>
+                  <button class="substep-btn" data-substep="3_3">NetMHC-I</button>
+                  <button class="substep-btn" data-substep="3_4">NetMHC-II (Optional)</button>
+                </div>
+                
+                <div class="substep-content">
+                  <!-- 3.1 ABCPred -->
+                  <div id="substep3_1" class="substep active">
+                    <h3>ABCPred Settings</h3>
+                    <div class="form-group">
+                      <label for="abcpred-threshold">Threshold Value</label>
+                      <input type="range" id="abcpred-threshold" min="0" max="1" step="0.01" value="0.7">
+                      <span id="abcpred-threshold-value">0.7</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="abcpred-length">Epitope Length</label>
+                      <select id="abcpred-length">
+                        <option value="16" selected>16</option>
+                        <option value="18">18</option>
+                      </select>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline" id="goBackToStep2">Step 2</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 3.2 NetCTL -->
+                  <div id="substep3_2" class="substep">
+                    <h3>NetCTL Settings</h3>
+                    <div class="form-group">
+                      <label for="netctl-supertype">MHC Supertype</label>
+                      <select id="netctl-supertype">
+                        <option value="A1">A1</option>
+                        <option value="A2" selected>A2</option>
+                        <option value="A3">A3</option>
+                        <option value="A24">A24</option>
+                        <option value="A26">A26</option>
+                        <option value="B7">B7</option>
+                        <option value="B8">B8</option>
+                        <option value="B27">B27</option>
+                        <option value="B39">B39</option>
+                        <option value="B44">B44</option>
+                        <option value="B58">B58</option>
+                        <option value="B62">B62</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="netctl-c-terminal">Weight on C terminal cleavage</label>
+                      <input type="range" id="netctl-c-terminal" min="0" max="1" step="0.05" value="0.10">
+                      <span id="netctl-c-terminal-value">0.10</span>
+                      <label for="netctl-tap-efficiency">Weight on TAP transport efficiency</label>
+                      <input type="range" id="netctl-tap-efficiency" min="0" max="1" step="0.05" value="0.05">
+                      <span id="netctl-tap-efficiency-value">0.05</span>
+                      <label for="netctl-threshold">Threshold Value</label>
+                      <input type="range" id="netctl-threshold" min="0" max="2" step="0.1" value="0.75">
+                      <span id="netctl-threshold-value">0.75</span>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 3.3 NetMHC-I -->
+                  <div id="substep3_3" class="substep">
+                    <h3>NetMHC-I Settings</h3>
+                    <div class="form-group">
+                      <label for="netmhci-allele">MHC-I Allele</label>
+                      <select id="netmhci-allele" class="parent-dropdown">
+                      </select>
+                    </div>
+                    <div class="form-group nested-dropdown">
+                      <label for="netmhci-allele-specific">Specific Allele</label>
+                      <select id="netmhci-allele-specific">
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="selected-alleles-i">Selected Alleles (Max 20)</label>
+                      <input type="text" id="selected-alleles-i" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="netmhci-length">Peptide Length</label>
+                      <select id="netmhci-length">
+                        <option value="8">8mer peptides</option>
+                        <option value="9" selected>9mer peptides</option>
+                        <option value="10">10mer peptides</option>
+                        <option value="11">11mer peptides</option>
+                        <option value="12">12mer peptides</option>
+                        <option value="13">13mer peptides</option>
+                        <option value="14">14mer peptides</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="netmhci-strong-threshold">Threshold for strong binders: % Rank</label>
+                      <input type="range" id="netmhci-strong-threshold" min="0.50" max="100" step="0.5" value="0.50">
+                      <span id="netmhci-strong-threshold-value">0.50</span>
+                      <label for="netmhci-weak-threshold">Threshold for weak binders: % Rank</label>
+                      <input type="range" id="netmhci-weak-threshold" min="0.50" max="100" step="0.5" value="2.0">
+                      <span id="netmhci-weak-threshold-value">2.0</span>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 3.4 NetMHC-II (Optional) -->
+                  <div id="substep3_4" class="substep">
+                    <h3>NetMHC-II Settings</h3>
+                    <div class="form-group">
+                      <label for="netmhcii-allele">MHC-II Allele</label>
+                      <select id="netmhcii-allele" class="parent-dropdown">
+                      </select>
+                    </div>
+                    <div class="form-group nested-dropdown">
+                      <label for="netmhcii-allele-specific">Specific Allele</label>
+                      <select id="netmhcii-allele-specific">
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="selected-alleles-ii">Selected Alleles (Max 20)</label>
+                      <input type="text" id="selected-alleles-ii" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="netmhcii-length">Peptide Length</label>
+                      <select id="netmhcii-length">
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="14" selected>15</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="netmhcii-strong-threshold">Threshold for strong binders: % Rank</label>
+                      <input type="range" id="netmhcii-strong-threshold" min="0.50" max="100" step="0.5" value="1.0">
+                      <span id="netmhcii-strong-threshold-value">1.0</span>
+                      <label for="netmhcii-weak-threshold">Threshold for weak binders: % Rank</label>
+                      <input type="range" id="netmhcii-weak-threshold" min="0.50" max="100" step="0.5" value="5.0">
+                      <span id="netmhcii-weak-threshold-value">5.0</span>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn primary" id="step3Submit">Submit for Analysis</button>
+                    </div>
+                  </div>
+              
+              <!-- Results for Step 3 (hidden initially) -->
+              <div id="step3Results" class="results-container" style="display: none;">
+                <h3>Epitope Prediction Results</h3>
+                <div class="results-summary">
+                  <div class="result-card">
+                    <h4>B-Cell Epitopes</h4>
+                    <div class="result-value"><span id="bcellCount">0</span> epitopes</div>
+                    <div class="result-label">identified by ABCPred</div>
+                  </div>
+                  <div class="result-card">
+                    <h4>T-Cell Epitopes</h4>
+                    <div class="result-value"><span id="tcellCount">0</span> epitopes</div>
+                    <div class="result-label">identified by NetCTL</div>
+                  </div>
+                  <div class="result-card">
+                    <h4>MHC-I Epitopes</h4>
+                    <div class="result-value"><span id="mhc1Count">0</span> epitopes</div>
+                    <div class="result-label">identified by NetMHC-I</div>
+                  </div>
+                  <div class="result-card">
+                    <h4>MHC-II Epitopes</h4>
+                    <div class="result-value"><span id="mhc2Count">0</span> epitopes</div>
+                    <div class="result-label">identified by NetMHC-II</div>
+                  </div>
+                </div>
+                
+                <div class="epitope-table-container">
+                  <h4>Top Predicted Epitopes</h4>
+                  <table class="data-table" id="epitopeTable">
+                    <thead>
+                      <tr>
+                        <th>Sequence ID</th>
+                        <th>Epitope Type</th>
+                        <th>Sequence</th>
+                        <th>Position</th>
+                        <th>Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Table will be populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div class="action-buttons">
+                  <button class="btn secondary" id="downloadStep3">Download Results</button>
+                  <button class="btn primary" id="goToStep4">Continue to Vaccine Properties</button>
+                </div>
+              </div>
+              
+              <!-- Loading indicator (hidden initially) -->
+              <div id="loadingStep3" class="loading-container" style="display: none;">
+                <div class="loading-animation">
+                  <div class="dna-helix">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                  </div>
+                </div>
+                <h3>Processing Epitope Predictions</h3>
+                <p>Running ABCPred, NetCTL, and NetMHC analysis...</p>
+              </div>
+              
+              <!-- Error indicator (hidden initially) -->
+              <div id="errorStep3" class="error-container" style="display: none;">
+                <div class="error-icon"></div>
+                <h3>Prediction Error</h3>
+                <p id="errorMessage3">An error occurred during the epitope prediction process.</p>
+                <div class="action-buttons">
+                  <button class="btn primary" id="retryStep3">Retry Prediction</button>
+                </div>
+              </div>
+            </section>
+            
+            <!-- Step 4: Vaccine Properties -->
+            <section id="step4" class="step-content">
+              <h2>Vaccine Properties Analysis</h2>
+              
+              <div class="multi-step-form">
+                <div class="substep-nav">
+                  <button class="substep-btn active" data-substep="4_1">AlgPred</button>
+                  <button class="substep-btn" data-substep="4_2">VaxiJen</button>
+                  <button class="substep-btn" data-substep="4_3">ToxinPred</button>
+                </div>
+                
+                <div class="substep-content">
+                  <!-- 4.1 Allergenicity -->
+                  <div id="substep4_1" class="substep active">
+                    <h3>AlgPred Settings</h3>
+                    <div class="form-group">
+                      <label for="algpred-threshold-ii">Threshold Value</label>
+                      <input type="range" id="algpred-threshold-ii" min="0" max="1" step="0.01" value="0.5">
+                      <span id="algpred-threshold-ii-value">0.5</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="algpred-method">Prediction Method</label>
+                      <select id="algpred-method">
+                        <option value="4">Hybrid (RF+BLAST+MERCI)</option>
+                        <option value="0">AAC based RF</option>
+                      </select>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn primary" id="goBackToStep3">Step 3</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+
+                  <!-- 4.2 VaxiJen -->
+                  <div id="substep4_2" class="substep">
+                    <h3>VaxiJen Settings</h3>
+                    <div class="form-group">
+                      <label for="vaxijen-threshold-ii">Antigen Threshold</label>
+                      <input type="range" id="vaxijen-threshold-ii" min="0" max="1" step="0.01" value="0.4">
+                      <span id="vaxijen-threshold-ii-value">0.4</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="vaxijen-target">Target Organism</label>
+                      <select id="vaxijen-target">
+                        <option value="bacteria">Bacteria</option>
+                        <option value="virus">Virus</option>
+                        <option value="parasite">Parasite</option>
+                        <!-- <option value="fungi">Fungi</option>
+                        <option value="tumor">Tumor</option> -->
+                      </select>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn secondary substep-next">Next</button>
+                    </div>
+                  </div>
+                  
+                  <!-- 4.3 ToxinPred -->
+                  <div id="substep4_3" class="substep">
+                    <h3>ToxinPred Settings</h3>
+                    
+                    <!-- SVM Method -->
+                    <div class="form-group">
+                      <label for="toxinpred-method">Target Organism</label>
+                      <select id="toxinpred-method">
+                        <option value="1">SVM (Swiss-Prot) based</option>
+                        <option value="2">SVM (Swiss-Prot) + Motif based</option>
+                        <option value="3">SVM (TrEMBL) based</option>
+                        <option value="4">SVM (TrEMBL) + Motif based</option>
+                      </select>
+                    </div>
+
+                    <!-- E-value Cutoff -->
+                    <div class="form-group">
+                      <label for="toxinpred-cutoff">Choose E-value cut-off for motif-based method:</label>
+                      <select id="toxinpred-cutoff">
+                        <option value="10">10</option>
+                        <option value="1">1</option>
+                        <option value="0.01">0.1</option>
+                        <option value="0.001">0.001</option>
+                        <option value="0.0001">0.0001</option>
+                        <option value="0.00001">0.00001</option>
+                        <option value="0.000001">0.000001</option>
+                      </select>
+                    </div>
+                  
+                    <!-- SVM Threshold -->
+                    <div class="form-group">
+                      <label for="toxinpred-threshold">SVM Threshold</label>
+                      <input type="range" id="toxinpred-threshold" min="-1.0" max="1" step="0.1" value="0.0">
+                      <span id="toxinpred-threshold-value">0.0</span>
+                    </div>
+                  
+                    <!-- Physicochemical Properties -->
+                    <!-- <div class="form-group">
+                      <label><strong>Physicochemical Properties to Be Displayed:</strong></label><br>
+                      <input type="checkbox" name="properties" value="Hydrophobicity"> Hydrophobicity<br>
+                      <input type="checkbox" name="properties" value="Sterichinderance"> Sterichinderance<br>
+                      <input type="checkbox" name="properties" value="Side bulk"> Side bulk<br>
+                      <input type="checkbox" name="properties" value="Hydropathicity"> Hydropathicity<br>
+                      <input type="checkbox" name="properties" value="Amphipathicity"> Amphipathicity<br>
+                      <input type="checkbox" name="properties" value="Hydrophilicity"> Hydrophilicity<br>
+                      <input type="checkbox" name="properties" value="Net Hydrogen"> Net Hydrogen<br>
+                      <input type="checkbox" name="properties" value="Charge"> Charge<br>
+                      <input type="checkbox" name="properties" value="pI"> pI<br>
+                      <input type="checkbox" name="properties" value="Molecular weight"> Molecular weight<br>
+                      <input type="checkbox" name="properties" value="All"> All<br><br>
+                    </div> -->
+                    <div class="action-buttons">
+                      <button class="btn outline substep-prev">Previous</button>
+                      <button class="btn primary" id="step4Submit">Submit for Analysis</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Results for Step 4 (hidden initially) -->
+              <!-- <div id="step4Results" class="results-container" style="display: none;">
+                <div class="multi-step-form">
+                  <div class="substep-nav">
+                    <button class="substep-btn active" data-substep="4_1">AlgPred</button>
+                    <button class="substep-btn" data-substep="4_2">VaxiJen</button>
+                    <button class="substep-btn" data-substep="4_3">ToxinPred</button>
+                  </div>
+                  <div class="substep-content">
+                    <div id="substep4_1" class="substep active">
+                      <h3>Vaccine Properties Results</h3>
+                      <div class="results-summary">
+                        <div class="result-card">
+                          <h4>Non-Allergenic Epitopes</h4>
+                          <div class="result-value"><span id="nonAllergenicCount">0</span> epitopes</div>
+                          <div class="result-label">passed allergenicity testing</div>
+                        </div>
+                        <div class="result-card">
+                          <h4>Antigenic Epitopes</h4>
+                          <div class="result-value"><span id="antigenicCount">0</span> epitopes</div>
+                          <div class="result-label">passed antigenicity testing</div>
+                        </div>
+                        <div class="result-card">
+                          <h4>Non-Toxic Epitopes</h4>
+                          <div class="result-value"><span id="nonToxicCount">0</span> epitopes</div>
+                          <div class="result-label">passed toxicity testing</div>
+                        </div>
+                        <div class="result-card total">
+                          <h4>Total Viable Epitopes</h4>
+                          <div class="result-value"><span id="viableEpitopeCount">0</span> epitopes</div>
+                          <div class="result-label">passed all criteria</div>
+                        </div>
+                      </div>
+                
+                <div class="epitope-table-container">
+                  <h4>Viable Epitopes</h4>
+                  <table class="data-table" id="viableEpitopeTable">
+                    <thead>
+                      <tr>
+                        <th>Epitope ID</th>
+                        <th>Sequence</th>
+                        <th>Type</th>
+                        <th>Allergenicity Score</th>
+                        <th>Antigenicity Score</th>
+                        <th>Toxicity Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div class="action-buttons">
+                  <button class="btn secondary" id="downloadStep4">Download Results</button>
+                  <button class="btn primary" id="goToStep5">Continue to Final Results</button>
+                </div>
+              </div> -->
+
+              <div id="step4Results" class="results-container" style="display: none;">
+                <h3>Vaccine Properties Results</h3>
+              
+                <div class="category-tabs">
+                  <button class="category-tab active" data-category="bcell">B-cell</button>
+                  <button class="category-tab" data-category="netctl">NetCTL</button>
+                  <button class="category-tab" data-category="netmhci">NetMHC-I</button>
+                  <button class="category-tab" data-category="netmhcii">NetMHC-II</button>
+                </div>
+              
+                <!-- Template for category -->
+                <div class="category-results" id="results-bcell">
+                  <div class="results-summary">
+                    <div class="result-card">
+                      <h4>Non-Allergenic Epitopes</h4>
+                      <div class="result-value"><span id="bCellAlgpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed allergenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Antigenic Epitopes</h4>
+                      <div class="result-value"><span id="bCellVaxijenPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed antigenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Non-Toxic Epitopes</h4>
+                      <div class="result-value"><span id="bCellToxinpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed toxicity testing</div>
+                    </div>
+                    <div class="result-card total">
+                      <h4>Total Viable Epitopes</h4>
+                      <div class="result-value"><span id="bCellTotalPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed all criteria</div>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="category-results" id="results-netctl" style="display: none;">
+                  <div class="results-summary">
+                    <div class="result-card">
+                      <h4>Non-Allergenic Epitopes</h4>
+                      <div class="result-value"><span id="netctlAlgpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed allergenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Antigenic Epitopes</h4>
+                      <div class="result-value"><span id="netctlVaxijenPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed antigenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Non-Toxic Epitopes</h4>
+                      <div class="result-value"><span id="netctlToxinpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed toxicity testing</div>
+                    </div>
+                    <div class="result-card total">
+                      <h4>Total Viable Epitopes</h4>
+                      <div class="result-value"><span id="netctlTotalPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed all criteria</div>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- Repeat the same structure for netmhci and netmhcii -->
+                <div class="category-results" id="results-netmhci" style="display: none;">
+                  <div class="results-summary">
+                    <div class="result-card">
+                      <h4>Non-Allergenic Epitopes</h4>
+                      <div class="result-value"><span id="netmhciAlgpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed allergenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Antigenic Epitopes</h4>
+                      <div class="result-value"><span id="netmhciVaxijenPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed antigenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Non-Toxic Epitopes</h4>
+                      <div class="result-value"><span id="netmhciToxinpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed toxicity testing</div>
+                    </div>
+                    <div class="result-card total">
+                      <h4>Total Viable Epitopes</h4>
+                      <div class="result-value"><span id="netmhciTotalPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed all criteria</div>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="category-results" id="results-netmhcii" style="display: none;">
+                  <div class="results-summary">
+                    <div class="result-card">
+                      <h4>Non-Allergenic Epitopes</h4>
+                      <div class="result-value"><span id="netmhciiAlgpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed allergenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Antigenic Epitopes</h4>
+                      <div class="result-value"><span id="netmhciiVaxijenPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed antigenicity testing</div>
+                    </div>
+                    <div class="result-card">
+                      <h4>Non-Toxic Epitopes</h4>
+                      <div class="result-value"><span id="netmhciiToxinpredPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed toxicity testing</div>
+                    </div>
+                    <div class="result-card total">
+                      <h4>Total Viable Epitopes</h4>
+                      <div class="result-value"><span id="netmhciiTotalPassCount">0</span> epitopes</div>
+                      <div class="result-label">passed all criteria</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="action-buttons">
+                  <button class="btn secondary" id="downloadStep4">Download Results</button>
+                  <button class="btn primary" id="goToStep5">Final Results</button>
+                </div>
+
+              </div>
+              
+              
+              <!-- Loading indicator (hidden initially) -->
+              <div id="loadingStep4" class="loading-container" style="display: none;">
+                <div class="loading-animation">
+                  <div class="dna-helix">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                  </div>
+                </div>
+                <h3>Analyzing Vaccine Properties</h3>
+                <p>Evaluating allergenicity, antigenicity, and toxicity...</p>
+              </div>
+              
+              <!-- Error indicator (hidden initially) -->
+              <div id="errorStep4" class="error-container" style="display: none;">
+                <div class="error-icon"></div>
+                <h3>Analysis Error</h3>
+                <p id="errorMessage4">An error occurred during the vaccine properties analysis.</p>
+                <div class="action-buttons">
+                  <button class="btn primary" id="retryStep4">Retry Analysis</button>
+                </div>
+              </div>
+            </section>
+            
+            <!-- Step 5: Final Results -->
+            <section id="step5" class="step-content">
+              <!-- Downloads Section -->
+              <div class="final-results">
+                <div class="section-header">
+                  <h2>File Downloads</h2>
+                  <p>Access and download all generated files from your analysis.</p>
+                </div>
+                
+                <div class="downloads-content">
+                  <!-- <div class="downloads-filter">
+                    <label for="fileTypeFilter">Filter by file type:</label>
+                    <select id="fileTypeFilter">
+                      <option value="all">All Files</option>
+                      <option value="fasta">FASTA Files</option>
+                      <option value="csv">CSV Files</option>
+                      <option value="pdf">PDF Reports</option>
+                    </select>
+                  </div> -->
+                  
+                  <div class="download-category">
+                    <h3>Step 5: Final Results</h3>
+                    <div class="files-grid">
+                      <div class="file-card" data-type="pdf">
+                        <div class="file-icon pdf"></div>
+                        <div class="file-info">
+                          <h4>Final Merged File</h4>
+                          <!-- <p>Comprehensive analysis report</p> -->
+                          <!-- <span class="file-meta">PDF | 1.2 MB</span> -->
+                        </div>
+                        <button class="btn outline btn-download" id="download_Step5">Download</button>
+                      </div>
+                      <!-- <div class="file-card" data-type="csv">
+                        <div class="file-icon csv"></div>
+                        <div class="file-info">
+                          <h4>Analytics Data</h4>
+                          <p>Raw data for all analytics</p>
+                          <span class="file-meta">CSV | 85 KB</span>
+                        </div>
+                        <button class="btn outline btn-download">Download</button>
+                      </div>
+                      <div class="file-card" data-type="fasta">
+                        <div class="file-icon fasta"></div>
+                        <div class="file-info">
+                          <h4>Final Epitope Set</h4>
+                          <p>Optimized epitope sequences</p>
+                          <span class="file-meta">FASTA | 12 KB</span>
+                        </div>
+                        <button class="btn outline btn-download">Download</button>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="download-category">
+                    <h3>Step 4: Vaccine Properties Files</h3>
+                    <div class="files-grid">
+                      <div class="file-card" data-type="csv">
+                        <div class="file-icon csv"></div>
+                        <div class="file-info">
+                          <h4>Property Analysis</h4>
+                          <!-- <p>Complete property analysis data</p> -->
+                          <!-- <span class="file-meta">CSV | 35 KB</span> -->
+                        </div>
+                        <button class="btn outline btn-download" id="download_Step4">Download</button>
+                      </div>
+                      <!-- <div class="file-card" data-type="fasta">
+                        <div class="file-icon fasta"></div>
+                        <div class="file-info">
+                          <h4>Viable Epitopes</h4>
+                          <p>Sequences passing all criteria</p>
+                          <span class="file-meta">FASTA | 15 KB</span>
+                        </div>
+                        <button class="btn outline btn-download">Download</button>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="download-category">
+                    <h3>Step 3: Epitope Prediction Files</h3>
+                    <div class="files-grid">
+                      <div class="file-card" data-type="fasta">
+                        <div class="file-icon fasta"></div>
+                        <div class="file-info">
+                          <h4>Predicted Epitopes</h4>
+                          <!-- <p>All predicted epitope sequences</p> -->
+                          <!-- <span class="file-meta">FASTA | 22 KB</span> -->
+                        </div>
+                        <button class="btn outline btn-download" id="download_Step3">Download</button>
+                      </div>
+                      <!-- <div class="file-card" data-type="csv">
+                        <div class="file-icon csv"></div>
+                        <div class="file-info">
+                          <h4>Epitope Summary</h4>
+                          <p>All epitopes with scores and positions</p>
+                          <span class="file-meta">CSV | 48 KB</span>
+                        </div>
+                        <button class="btn outline btn-download">Download</button>
+                      </div>
+                      <div class="file-card" data-type="csv">
+                        <div class="file-icon csv"></div>
+                        <div class="file-info">
+                          <h4>B-Cell Epitopes</h4>
+                          <p>ABCPred prediction results</p>
+                          <span class="file-meta">CSV | 18 KB</span>
+                        </div>
+                        <button class="btn outline btn-download">Download</button>
+                      </div>
+                      <div class="file-card" data-type="csv">
+                        <div class="file-icon csv"></div>
+                        <div class="file-info">
+                          <h4>T-Cell Epitopes</h4>
+                          <p>NetCTL prediction results</p>
+                          <span class="file-meta">CSV | 22 KB</span>
+                        </div>
+                        <button class="btn outline btn-download">Download</button>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="downloads-list">
+                    <div class="download-category">
+                      <h3>Step 2: Sequence Analysis Files</h3>
+                      <div class="files-grid">
+                        <div class="file-card" data-type="fasta">
+                          <div class="file-icon fasta"></div>
+                          <div class="file-info">
+                            <h4>Filtered Sequences</h4>
+                            <!-- <p>Sequences passing all criteria</p> -->
+                            <!-- <span class="file-meta">FASTA | 45 KB</span> -->
+                          </div>
+                          <button class="btn outline btn-download" id="download_Step2">Download</button>
+                        </div>
+                        <!-- <div class="file-card" data-type="csv">
+                          <div class="file-icon csv"></div>
+                          <div class="file-info">
+                            <h4>AlgPred Results</h4>
+                            <p>Complete allergenicity analysis</p>
+                            <span class="file-meta">CSV | 28 KB</span>
+                          </div>
+                          <button class="btn outline btn-download">Download</button>
+                        </div>
+                        <div class="file-card" data-type="csv">
+                          <div class="file-icon csv"></div>
+                          <div class="file-info">
+                            <h4>VaxiJen Results</h4>
+                            <p>Complete antigenicity analysis</p>
+                            <span class="file-meta">CSV | 32 KB</span>
+                          </div>
+                          <button class="btn outline btn-download">Download</button>
+                        </div>
+                        <div class="file-card" data-type="csv">
+                          <div class="file-icon csv"></div>
+                          <div class="file-info">
+                            <h4>Phobius Results</h4>
+                            <p>Transmembrane prediction data</p>
+                            <span class="file-meta">CSV | 30 KB</span>
+                          </div>
+                          <button class="btn outline btn-download">Download</button>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="summary-metrics">
+                  <div class="metric-card">
+                    <div class="metric-icon" id="epitopeIcon"></div>
+                    <div class="metric-value"><span id="finalEpitopeCount">0</span></div>
+                    <div class="metric-label">Total Viable Epitopes</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-icon" id="coverageIcon"></div>
+                    <div class="metric-value"><span id="populationCoverage">0</span>%</div>
+                    <div class="metric-label">Population Coverage</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-icon" id="antigenicityIcon"></div>
+                    <div class="metric-value"><span id="antigenicityScore">0</span></div>
+                    <div class="metric-label">Antigenicity Score</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-icon" id="safetyIcon"></div>
+                    <div class="metric-value"><span id="safetyScore">0</span></div>
+                    <div class="metric-label">Safety Score</div>
+                  </div>
+                </div> -->
+                
+                <!-- <div class="data-visualization">
+                  <h3>Visualization</h3>
+                  <div class="chart-container">
+                    <canvas id="epitopeChart"></canvas>
+                  </div>
+                </div> -->
+                
+                <!-- <div class="final-downloads">
+                  <h3>Download Results</h3>
+                  <div class="download-options">
+                    <div class="download-option">
+                      <div class="download-icon"></div>
+                      <div class="download-info">
+                        <h4>Complete Analysis Report</h4>
+                        <p>Full PDF report with all analysis results and metrics</p>
+                      </div>
+                      <button class="btn secondary">Download PDF</button>
+                    </div>
+                    <div class="download-option">
+                      <div class="download-icon"></div>
+                      <div class="download-info">
+                        <h4>Epitope Sequences</h4>
+                        <p>FASTA file containing all viable epitope sequences</p>
+                      </div>
+                      <button class="btn secondary">Download FASTA</button>
+                    </div>
+                    <div class="download-option">
+                      <div class="download-icon"></div>
+                      <div class="download-info">
+                        <h4>Raw Data</h4>
+                        <p>CSV files containing all raw analysis data</p>
+                      </div>
+                      <button class="btn secondary">Download CSV</button>
+                    </div>
+                  </div>
+                </div> -->
+                <!-- <section id="downloadsSection" class="section"> -->
+              <!-- </section> -->
+              <br>
+              <br>
+              <button class="btn outline" id="goBackToStep4">Step 4</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Documentation Section -->
+    <section id="documentationSection" class="section">
+      <div class="section-header">
+        <h2>Documentation</h2>
+        <p>Comprehensive documentation for the BioPipeline vaccine development platform.</p>
+      </div>
+        
+        <div class="documentation-content">
+          <div class="documentation-nav">
+            <ul>
+              <li><a href="#overview" class="active">Overview</a></li>
+              <li><a href="#workflow">Workflow</a></li>
+              <li><a href="#tools">Tools</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ul>
+          </div>
+          
+          <div class="documentation-body">
+            <section id="overview" class="doc-section active">
+              <h3>Platform Overview</h3>
+              <p>BioPipeline is a comprehensive platform that streamlines the vaccine development process using advanced bioinformatics tools. It integrates various prediction and analysis tools into a single cohesive workflow, making it easier to identify potential vaccine candidates.</p>
+              
+              <h4>Key Features</h4>
+              <ul>
+                <li>Streamlined multi-step workflow from sequence analysis to final vaccine properties</li>
+                <li>Integration of industry-standard bioinformatics tools</li>
+                <li>Comprehensive result visualization and analysis</li>
+                <li>Downloadable reports and data at each step</li>
+              </ul>
+            </section>
+            
+            <section id="workflow" class="doc-section">
+              <h3>Workflow Documentation</h3>
+              
+              <div class="workflow-step-doc">
+                <h4>Step 1: FASTA Upload</h4>
+                <p>The first step involves uploading a FASTA file containing protein sequences for analysis. The platform accepts standard FASTA format files with multiple sequences.</p>
+              </div>
+              
+              <div class="workflow-step-doc">
+                <h4>Step 2: Sequence Analysis</h4>
+                <p>In this step, the uploaded sequences are analyzed using three specialized tools:</p>
+                <ul>
+                  <li><strong>AlgPred:</strong> Predicts allergenicity of protein sequences</li>
+                  <li><strong>VaxiJen:</strong> Analyzes antigenicity of the sequences</li>
+                  <li><strong>Phobius:</strong> Predicts transmembrane topology and signal peptides</li>
+                </ul>
+                <p>You can select a specific range of sequences for analysis and configure parameters for each tool. The results show how many sequences passed each analysis criteria.</p>
+              </div>
+              
+              <div class="workflow-step-doc">
+                <h4>Step 3: Epitope Prediction</h4>
+                <p>This step predicts potential epitopes using four specialized tools:</p>
+                <ul>
+                  <li><strong>ABCPred:</strong> B-cell epitope prediction</li>
+                  <li><strong>NetCTL:</strong> T-cell epitope prediction</li>
+                  <li><strong>NetMHC-I:</strong> MHC class I binding epitope prediction</li>
+                  <li><strong>NetMHC-II (Optional):</strong> MHC class II binding epitope prediction</li>
+                </ul>
+                <p>Each tool can be configured with specific parameters. The results display the number of epitopes identified by each tool.</p>
+              </div>
+              
+              <div class="workflow-step-doc">
+                <h4>Step 4: Vaccine Properties</h4>
+                <p>The identified epitopes are further analyzed for their vaccine potential:</p>
+                <ul>
+                  <li><strong>Allergenicity:</strong> Confirms epitopes are non-allergenic</li>
+                  <li><strong>Antigenicity:</strong> Ensures epitopes are sufficiently antigenic</li>
+                  <li><strong>ToxinPred:</strong> Verifies epitopes are non-toxic</li>
+                </ul>
+                <p>Results show how many epitopes passed each criterion and identify viable vaccine candidates.</p>
+              </div>
+              
+              <div class="workflow-step-doc">
+                <h4>Step 5: Final Results</h4>
+                <p>The final step provides comprehensive analytics on the identified vaccine candidates:</p>
+                <ul>
+                  <li>Total number of viable epitopes</li>
+                  <li>Estimated population coverage</li>
+                  <li>Overall antigenicity and safety scores</li>
+                  <li>Downloadable reports and data files</li>
+                </ul>
+              </div>
+            </section>
+            
+            <section id="tools" class="doc-section">
+              <h3>Tools Documentation</h3>
+              
+              <div class="tool-doc">
+                <h4>AlgPred</h4>
+                <p>AlgPred is a tool for prediction of allergenic proteins and mapping of IgE epitopes. It uses various approaches such as support vector machines, motif-based method, and hybrid approaches.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>Threshold Value:</strong> Determines the stringency of prediction (0-1)</li>
+                  <li><strong>Prediction Method:</strong> The approach used for prediction (hybrid, SVM, motif)</li>
+                </ul>
+              </div>
+              
+              <div class="tool-doc">
+                <h4>VaxiJen</h4>
+                <p>VaxiJen is the first server for alignment-independent prediction of protective antigens. It uses an alignment-free approach based on auto cross covariance transformation of protein sequences into uniform vectors of principal amino acid properties.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>Antigen Threshold:</strong> Cutoff value for antigen classification (0-1)</li>
+                  <li><strong>Target Organism:</strong> The type of pathogen being analyzed</li>
+                </ul>
+              </div>
+              
+              <div class="tool-doc">
+                <h4>Phobius</h4>
+                <p>Phobius is a combined transmembrane topology and signal peptide predictor. It is used to identify transmembrane regions and signal peptides in proteins.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>Prediction Method:</strong> Normal or short prediction mode</li>
+                  <li><strong>Output Format:</strong> Format of the prediction results</li>
+                </ul>
+              </div>
+              
+              <div class="tool-doc">
+                <h4>ABCPred</h4>
+                <p>ABCPred is a tool for B-cell epitope prediction using artificial neural network. It predicts B-cell epitopes in an antigen sequence with accuracy.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>Threshold Value:</strong> Cutoff for epitope prediction (0-1)</li>
+                  <li><strong>Epitope Length:</strong> Length of the epitope to be predicted</li>
+                </ul>
+              </div>
+              
+              <div class="tool-doc">
+                <h4>NetCTL</h4>
+                <p>NetCTL predicts CTL (Cytotoxic T Lymphocyte) epitopes in protein sequences. The prediction method integrates MHC class I binding, TAP transport efficiency, and proteasomal cleavage.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>MHC Supertype:</strong> MHC supertype to be used for prediction</li>
+                  <li><strong>Threshold Value:</strong> Cutoff for epitope identification</li>
+                </ul>
+              </div>
+              
+              <div class="tool-doc">
+                <h4>NetMHC</h4>
+                <p>NetMHC predicts binding of peptides to MHC class I molecules. The method uses artificial neural networks (ANNs) trained on binding data.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>MHC Allele:</strong> Specific MHC allele for binding prediction</li>
+                  <li><strong>Peptide Length:</strong> Length of peptides to be analyzed</li>
+                  <li><strong>Binding Threshold:</strong> Affinity cutoff in nM</li>
+                </ul>
+              </div>
+              
+              <div class="tool-doc">
+                <h4>ToxinPred</h4>
+                <p>ToxinPred is a tool designed to predict and design toxic/non-toxic peptides. It uses machine learning approaches to predict toxicity.</p>
+                <p><strong>Key Parameters:</strong></p>
+                <ul>
+                  <li><strong>Prediction Method:</strong> SVM or motif-based prediction</li>
+                  <li><strong>Toxicity Threshold:</strong> Cutoff for toxicity classification</li>
+                </ul>
+              </div>
+            </section>
+            
+            <section id="faq" class="doc-section">
+              <h3>Frequently Asked Questions</h3>
+              
+              <div class="faq-item">
+                <h4>What file formats are accepted for sequence upload?</h4>
+                <p>The platform accepts standard FASTA format files (.fasta, .fa, or .txt containing FASTA formatted sequences). Each sequence should have a header line starting with '>' followed by the sequence identifier.</p>
+              </div>
+              
+              <div class="faq-item">
+                <h4>How long does the analysis process take?</h4>
+                <p>Processing time depends on the number and length of sequences, as well as the server load. Typically, each step takes from a few minutes to several hours for very large datasets.</p>
+              </div>
+              
+              <div class="faq-item">
+                <h4>Can I save my progress and return later?</h4>
+                <p>Yes, the platform automatically saves your progress at each step. You can return to your analysis using the provided job ID.</p>
+              </div>
+              
+              <div class="faq-item">
+                <h4>What do the threshold values mean?</h4>
+                <p>Threshold values determine the stringency of predictions. Higher thresholds usually result in fewer but more confident predictions, while lower thresholds identify more candidates but with potentially more false positives.</p>
+              </div>
+              
+              <div class="faq-item">
+                <h4>How can I interpret the results?</h4>
+                <p>The platform provides detailed summaries and visualizations to help interpret results. Generally, sequences or epitopes that pass all criteria are considered the best vaccine candidates. Detailed explanation of each metric is provided in the documentation.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+      
+      
+    </div>
+  </main>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-info">
+        <!-- <p>&copy; 2025 Vaccine Development Platform</p> -->
+        &copy; 2025 Vaccine Development Platform
+
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/file-upload.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sequence-analysis.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/epitope-prediction.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/vaccine-properties.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='js/results.js') }}"></script> -->
+</body>
+</html>

@@ -2,8 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.csv
-scripts/
-uploads/
-user_data/
-outputs/
-cognitree/
+*.dat
+*.db
+.env
+allele_data/
