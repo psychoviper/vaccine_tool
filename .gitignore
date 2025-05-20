@@ -5,4 +5,5 @@ __pycache__/
 *.dat
 *.db
 .env
-allele_data/
+# allele_data/
+cognitree/
