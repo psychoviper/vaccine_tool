@@ -113,6 +113,14 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Please upload a valid FASTA file (.fasta, .fa, or .txt)');
         return;
       }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch("/upload", {
+        method: "POST",
+        body: formData
+      })
       
       // Update UI
       fileName.textContent = file.name;

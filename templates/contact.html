@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniVax - Contact Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Gemunu+Libre:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4dd7d93d54.js" crossorigin="anonymous"></script>
+    <style>
+        /* Sticky Footer CSS - START */
+        html, body {
+            height: 100%; /* Ensures html and body take full viewport height */
+            margin: 0; /* Remove default body margin */
+        }
+
+        body {
+            display: flex; /* Enables flexbox layout */
+            flex-direction: column; /* Stacks children vertically */
+        }
+
+        .main-content-wrapper {
+            flex-grow: 1; /* Allows this element to take up all available space, pushing footer down */
+            /* Add any other specific styling for your main content wrapper here if needed */
+        }
+        /* Sticky Footer CSS - END */
+
+        .footer-center a.active {
+            color: black;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.4rem;
+        }
+
+        /* Hero section for the contact page - Similar to Privacy Policy */
+        #contactHero {
+            background: linear-gradient(to bottom, rgb(228, 241, 239), rgb(255, 255, 255));
+            padding: 5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        #contactHero h1 {
+            font-family: "IBM Plex Sans", sans-serif;
+            letter-spacing: -0.05rem;
+            font-weight: 800;
+            font-size: 6rem;
+            color: #262626;
+            margin-bottom: 1.5rem;
+        }
+
+        #contactHero p {
+            font-family: "Inter", sans-serif;
+            color: rgb(113, 113, 122);
+            font-size: 2.4rem;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Accordion Container Styling - ensures consistent width with Privacy Policy */
+        .accordion-container {
+            width: 100%;
+            max-width: 1050px; /* This sets the maximum width for the entire accordion block */
+            margin: 6rem auto 6rem auto; /* Centers the container and provides vertical spacing */
+            padding: 0 2rem; /* Default horizontal padding for smaller screens */
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* Spacing between accordion items */
+        }
+
+        .accordion-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%; /* Ensures accordion items fill the width of the container */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            background-color: white;
+        }
+
+        /* Gradient backgrounds for alternating accordion items */
+        .accordion-item:nth-child(even) {
+            background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(245, 250, 249));
+        }
+
+        .accordion-item:nth-child(odd) {
+            background: linear-gradient(to bottom, rgb(245, 250, 249), rgb(255, 255, 255));
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 2.5rem;
+            background-color: transparent;
+            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-header {
+            background-color: #e8f3f1;
+        }
+
+        .accordion-header:hover {
+            background-color: #eef8f6;
+        }
+
+        .accordion-header h2 {
+            flex-grow: 1;
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            color: rgba(106, 71, 131, 255);
+            margin: 0;
+            padding-left: 0;
+            position: relative;
+        }
+
+        .accordion-header h2 i {
+            font-size: 3rem;
+            margin-right: 15px;
+            color:#9b6eb6;
+        }
+
+        .accordion-icon {
+            font-size: 3.2rem;
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(90deg);
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 2.5rem; /* Only horizontal padding initially */
+            background-color: transparent;
+        }
+
+        .accordion-item.open .accordion-content {
+            padding: 2.5rem; /* Apply full padding when open */
+        }
+
+        /* --- Content-specific Styles within Accordion --- */
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(106, 71, 131, 0.4), transparent);
+            margin: 4rem auto; /* Vertical spacing and centering for the divider */
+        }
+
+        .professorInfo {
+            width: 100%;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            transition: none;
+            background-color: transparent;
+        }
+
+        .professorContent {
+            display: flex;
+            gap: 4rem;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .professorPhoto-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 2rem;
+            position: relative;
+            margin-bottom: 2rem; /* Added margin for consistency with original professor layout */
+        }
+
+        .professorPhoto-container:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(106, 71, 131, 0.4), transparent);
+        }
+
+        .professorPhoto {
+            width: 20rem;
+            height: 20rem;
+            border-radius: 50%;
+            background-color: rgba(106, 71, 131, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .professorPhoto i {
+            font-size: 8rem;
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .professorDetails {
+            flex: 1;
+            padding-left: 2rem;
+            min-width: 300px;
+        }
+
+        .professorName {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .professorTitle {
+            font-family: "Inter", sans-serif;
+            color: rgba(106, 71, 131, 255);
+            font-size: 2.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .professorDescription {
+            font-family: "Inter", sans-serif;
+            color: rgb(113, 113, 122);
+            font-size: 2.3rem;
+            line-height: 1.6em;
+            margin-bottom: 3rem;
+        }
+
+        /* Re-using teamSocial class for all social links, ensuring consistency */
+        .teamSocial {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem; /* This margin-bottom was present in previous teamSocial */
+        }
+
+        .teamSocial a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 50%;
+            background-color: rgb(228, 241, 239);
+            color: rgba(106, 71, 131, 255);
+            font-size: 2.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none; /* Ensure no underline */
+        }
+
+        .teamSocial a:hover {
+            background-color: rgba(106, 71, 131, 255);
+            color: white;
+        }
+
+        /* The contact button is not directly involved in this task, but kept for completeness */
+        .contactButton {
+            margin-top: 1rem;
+            font-size: 2.2rem;
+            background-color: rgba(106, 71, 131, 255);
+            color: white;
+            padding: 1.2rem 3.5rem;
+            border: none;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            font-family: "Geist", sans-serif;
+            font-weight: 500;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .contactButton:hover {
+            background-color: rgba(155, 110, 182, 255);
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 1280px) {
+            #contactHero {
+                padding: 4rem 10rem;
+            }
+
+            .accordion-container {
+                padding: 0 10rem; /* Adjusted padding for medium screens */
+            }
+
+            .professorContent {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .professorPhoto-container {
+                padding-right: 0;
+                padding-bottom: 2rem; /* Added padding to bottom instead of right */
+                margin-bottom: 0; /* Adjusted as padding takes its place */
+            }
+
+            .professorPhoto-container:after {
+                right: 0;
+                top: auto;
+                bottom: 0;
+                height: 1px;
+                width: 100%;
+                background: linear-gradient(to right, transparent, rgba(106, 71, 131, 0.4), transparent);
+            }
+
+            .professorDetails {
+                padding-left: 0;
+                text-align: center; /* Center align text on smaller screens */
+            }
+
+            .professorName {
+                font-size: 3.5rem;
+            }
+
+            .professorTitle {
+                font-size: 2.4rem;
+            }
+
+            .professorDescription {
+                font-size: 2rem;
+            }
+
+            .teamSocial {
+                justify-content: center; /* Center social icons on smaller screens */
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            #contactHero {
+                padding: 3rem 5rem;
+                height: auto;
+            }
+
+            #contactHero h1 {
+                font-size: 5rem;
+            }
+
+            #contactHero p {
+                font-size: 2.2rem;
+            }
+
+            .accordion-container {
+                padding: 0 2rem; /* Adjusted padding for small screens */
+            }
+
+            .accordion-header h2 {
+                font-size: 2.6rem;
+            }
+            .accordion-header h2 i {
+                font-size: 2.6rem;
+            }
+            .accordion-icon {
+                font-size: 2.8rem;
+            }
+            .accordion-content {
+                padding: 2rem;
+            }
+
+            .professorInfo {
+                padding: 0;
+            }
+
+            .professorName {
+                font-size: 2.8rem;
+            }
+
+            .professorTitle {
+                font-size: 2rem;
+            }
+
+            .professorDescription {
+                font-size: 1.6rem;
+            }
+
+            .professorPhoto {
+                width: 12rem;
+                height: 12rem;
+            }
+
+            .professorPhoto i {
+                font-size: 5rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #contactHero h1 {
+                font-size: 3.2rem;
+            }
+
+            #contactHero p {
+                font-size: 1.8rem;
+            }
+
+            .accordion-header {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.2rem;
+            }
+
+            .accordion-content {
+                padding: 0 1.5rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.5rem;
+            }
+
+            .professorPhoto {
+                width: 14rem;
+                height: 14rem;
+            }
+
+            .professorPhoto i {
+                font-size: 5rem;
+            }
+
+            .professorName {
+                font-size: 2.8rem;
+            }
+
+            .professorTitle {
+                font-size: 2rem;
+            }
+
+            .professorDescription {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar">
+        <div id="navbarLogo">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
+            <span id="navbarTitle">
+                <span id="navbarTitle1">Uni</span>
+                <span id="navbarTitle2">Vax</span>
+            </span>
+        </div>
+        <div id="navbarMenu">
+            <div><a href="index.html">Home</a></div>
+            <div><a href="documentation.html">Documentation</a></div>
+            <div><a href="about.html">About</a></div>
+        </div>
+        <div id="navbarStart">
+            <button>Start Analysis</button>
+        </div>
+    </div>
+
+    <div class="main-content-wrapper">
+        <div id="contactHero">
+            <h1>Contact Us</h1>
+            <p>We warmly welcome collaborations, queries, and feedback on UniVax. <br> For technical assistance, feel free to reach out to our developers.</p>
+        </div>
+
+        <div class="accordion-container">
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h2 class="section-title"><i class="fa-solid fa-flask-vial"></i>Our Research Lab</h2>
+                    <i class="fas fa-chevron-right accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="professorInfo">
+                        <div class="professorContent">
+                            <div class="professorPhoto-container">
+                                <div class="professorPhoto">
+                                    <i class="fa-solid fa-flask-vial"></i>
+                                </div>
+                            </div>
+                            <div class="professorDetails">
+                                <h3 class="professorName">Immune Engineering Lab</h3>
+                                <p class="professorTitle">Indian Institute of Technology, Mandi</p>
+                                <p class="professorDescription">
+                                    The Immune Engineering Laboratory at IIT Mandi focuses on computational immunology and vaccine
+                                    design. Our team specializes in developing integrated bioinformatics tools that streamline the
+                                    process of vaccine development through advanced computational methods.
+                                </p>
+                                <div class="teamSocial">
+                                    <a href="https://sites.google.com/view/amit-prasad/" target="_blank"
+                                        style="text-decoration: none;"><i class="fa-solid fa-globe fa-1x"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h2 class="section-title"><i class="fa-solid fa-user-tie"></i>Lab Director</h2>
+                    <i class="fas fa-chevron-right accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="professorInfo">
+                        <div class="professorContent">
+                            <div class="professorPhoto-container">
+                                <div class="professorPhoto">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                            </div>
+                            <div class="professorDetails">
+                                <h3 class="professorName">Dr. Amit Prasad</h3>
+                                <p class="professorTitle">Associate Professor, IIT Mandi</p>
+                                <p class="professorDescription">
+                                    Dr. Amit Prasad leads the Immune Engineering Lab at IIT Mandi, focusing on computational
+                                    immunology
+                                    and vaccine design. With over 15 years of experience in the field, he supervises research
+                                    projects
+                                    addressing challenges in vaccine development.
+                                </p>
+                                <div class="teamSocial">
+                                    <a href="https://faculty.iitmandi.ac.in/~amitprasad/" target="_blank"
+                                        style="text-decoration: none;"><i class="fa-solid fa-globe fa-1x"></i></a>
+                                    <a href="mailto:amitprasad@iitmandi.ac.in" style="text-decoration: none;"><i
+                                            class="fa-solid fa-envelope fa-1x"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h2 class="section-title"><i class="fa-solid fa-users"></i>Development Team</h2>
+                    <i class="fas fa-chevron-right accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="professorInfo">
+                        <div class="professorContent">
+                            <div class="professorPhoto-container">
+                                <div class="professorPhoto">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="professorDetails">
+                                <h3 class="professorName">Sufi Hussain</h3>
+                                <p class="professorTitle">Integrated Dual Degree Scholar</p>
+                                <p class="professorDescription">
+                                    Sufi focuses on immunoinformatics and database management for vaccine development. His work involves
+                                    designing prediction algorithms and integrating multiple analysis tools into the UniVax platform.
+                                </p>
+                                <div class="teamSocial">
+                                    <a href="https://www.linkedin.com/in/md-sufi-hussain/" target="_blank"
+                                        style="text-decoration: none;"><i class="fab fa-linkedin-in fa-1x"></i></a>
+                                    <a href="mailto:b20015@students.iitmandi.ac.in" style="text-decoration: none;"><i
+                                            class="fas fa-envelope fa-1x"></i></a>
+                                    <a href="https://github.com/sufihussain" target="_blank" style="text-decoration: none;"><i
+                                            class="fab fa-github fa-1x"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <div class="professorInfo">
+                        <div class="professorContent">
+                            <div class="professorPhoto-container">
+                                <div class="professorPhoto">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="professorDetails">
+                                <h3 class="professorName">Shubham Prakash</h3>
+                                <p class="professorTitle">Integrated Dual Degree Scholar</p>
+                                <p class="professorDescription">
+                                    Shubham specializes in computational biology and software development. His research focuses on
+                                    integrating bioinformatics tools for vaccine design and development of the UniVax platform.
+                                </p>
+                                <div class="teamSocial">
+                                    <a href="https://www.linkedin.com/in/sbhmprksh/" target="_blank"
+                                        style="text-decoration: none;"><i class="fab fa-linkedin-in fa-1x"></i></a>
+                                    <a href="mailto:b20021@students.iitmandi.ac.in" style="text-decoration: none;"><i
+                                            class="fa-solid fa-envelope fa-1x"></i></a>
+                                    <a href="https://github.com/sbhm-prksh" target="_blank" style="text-decoration: none;"><i
+                                            class="fab fa-github fa-1x"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <footer id="footer">
+        <div class="footer-left">
+            <p>&copy; 2025 UniVax. All Rights Reserved</p>
+        </div>
+        <div class="footer-center">
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="#">GitHub</a>
+        </div>
+    </footer>
+
+    <script>
+        const startButton = document.getElementById('navbarStart');
+        startButton.addEventListener('click', function() {
+            window.location.href = '/analysis';  
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const accordionItem = this.closest('.accordion-item');
+                    const accordionContent = this.nextElementSibling;
+                    const icon = this.querySelector('.accordion-icon');
+
+                    // Toggle the 'open' class on the accordion item
+                    accordionItem.classList.toggle('open');
+
+                    if (accordionItem.classList.contains('open')) {
+                        // Set maxHeight to scrollHeight to allow content to fully expand smoothly
+                        // The +200px was arbitrary; using scrollHeight directly is generally best practice for smooth transitions
+                        // unless you need extra padding after expansion. Let's stick to scrollHeight directly.
+                        accordionContent.style.maxHeight = accordionContent.scrollHeight+200 + "px";
+                        icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+                    } else {
+                        accordionContent.style.maxHeight = "0";
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

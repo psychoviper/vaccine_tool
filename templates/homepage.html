@@ -1,234 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>UniVax</title>
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-   <!-- FONTS -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link
-       href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Gemunu+Libre:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-       rel="stylesheet">
-   <!-- FONTS -->
-   <script src="https://kit.fontawesome.com/4dd7d93d54.js" crossorigin="anonymous"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniVax</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Gemunu+Libre:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <!-- FONTS -->
+    <script src="https://kit.fontawesome.com/4dd7d93d54.js" crossorigin="anonymous"></script>
 
 </head>
 
-
 <body>
-   <!-- 1. NAVBAR -->
-   <div id="navbar">
-       <!-- 1.1 Left Logo and Title -->
-       <div id="navbarLogo">
-           <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
-           <span id="navbarTitle">
-               <span id="navbarTitle1">Uni</span>
-               <span id="navbarTitle2">Vax</span>
-           </span>
-       </div>
-       <!-- 1.2 Menu Options in center  -->
-       <div id="navbarMenu">
-           <div><a href="#" class="active">Home</a></div>
-           <div><a href="#">Documentation</a></div>
-           <div><a href="#">About</a></div>
-       </div>
-       <!-- 1.3 Start Button in right -->
-       <div id="navbarStart">
-           <button id="startAnalysis">Start Analysis</button>
-       </div>
-   </div>
-   <!-- 2. LANDING PAGE -->
-   <div id="landing">
-       <!-- 2.1 Landing Page Content -->
-       <div id="leftLanding">
-           <div id="landingHeading">
-               <h1>Unified Vaccine Development Platform</h1>
-           </div>
-           <div id="landingContent">
-               UniVax streamlines vaccine development by integrating allergenicity testing, antigen analysis, epitope
-               prediction, and more into a single unified workflow.
-           </div>
-           <div id="landingButtons">
-               <button id="landingMore">
-                   Learn More
-               </button>
-           </div>
-       </div>
-       <!-- 2.2 Landig Page Picture -->
-       <div id="rightLanding">
-           <img src="{{ url_for('static', filename='images/landing.png') }}" alt="vaccine">
-       </div>
-   </div>
-   <!-- 3. Modules -->
-   <div id="modules">
-       <h1>Integrated Bioinformatics Tools</h1>
-       <!--3.1 Row-1  -->
-       <div class="modulesRow">
-           <div class="cards">
-               <div class="cardsImages">
-                   <i class="fas fa-bug fa-5x"></i>
-               </div>
-               <div class="cardsHeadings">
-                   <h3>Allergenicity Testing</h3>
-               </div>
-               <div class="cardsContents">
-                   Identify protein sequences that may trigger allergic responses using known allergen data and
-                   predictive screening techniques.
-               </div>
-           </div>
-           <div class="cards">
-               <div class="cardsImages">
-                   <i class="fa-solid fa-vial-virus fa-5x"></i>
-               </div>
-               <div class="cardsHeadings">
-                   <h3>Antigenicity Test</h3>
-               </div>
-               <div class="cardsContents">
-                   Identify protein regions likely to be recognized as antigens by the immune system during the immune
-                   recognition process.
-               </div>
-           </div>
-           <div class="cards">
-               <div class="cardsImages">
-                   <i class="fa-solid fa-microscope fa-5x"></i>
-               </div>
-               <div class="cardsHeadings">
-                   <h3>Signal Peptide Detection</h3>
-               </div>
-               <div class="cardsContents">
-                   Detect short peptide sequences that guide proteins for secretion outside the cell using biological
-                   sequence analysis.
-               </div>
-           </div>
-       </div>
-       <div class="modulesRow">
-           <div class="cards">
-               <div class="cardsImages">
-                   <i class="fa-solid fa-shield-virus fa-5x"></i>
+    <!-- 1. NAVBAR -->
+    <div id="navbar">
+        <!-- 1.1 Left Logo and Title -->
+        <div id="navbarLogo">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
+            <span id="navbarTitle">
+                <span id="navbarTitle1">Uni</span>
+                <span id="navbarTitle2">Vax</span>
+            </span>
+        </div>
+        <!-- 1.2 Menu Options in center  -->
+        <div id="navbarMenu">
+            <div><a href="{{ url_for('index') }}" class="active">Home</a></div>
+            <div><a href="{{ url_for('documentation') }}">Documentation</a></div>
+            <div><a href="{{ url_for('about') }}">About</a></div>
+        </div>
+        <!-- 1.3 Start Button in right -->
+        <div id="navbarStart">
+            <button>Start Analysis</button>
+        </div>
+    </div>
+    <!-- 2. LANDING PAGE -->
+    <div id="landing">
+        <!-- 2.1 Landing Page Content -->
+        <div id="leftLanding">
+            <div id="landingHeading">
+                <h1>Unified Vaccine Development Platform</h1>
+            </div>
+            <div id="landingContent">
+                UniVax streamlines vaccine development by integrating allergenicity testing, antigen analysis, epitope
+                prediction, and more into a single unified workflow.
+            </div>
+            <div id="landingButtons">
+                <button id="landingMore">
+                    Learn More
+                </button>
+            </div>
+        </div>
+        <!-- 2.2 Landig Page Picture -->
+        <div id="rightLanding">
+            <img src="{{ url_for('static', filename='images/landing.png') }}" alt="vaccine">
+        </div>
+    </div>
+    <!-- 3. Modules -->
+    <div id="modules">
+        <h1>Integrated Bioinformatics Tools</h1>
+        <!--3.1 Row-1  -->
+        <div class="modulesRow">
+            <div class="cards">
+                <div class="cardsImages">
+                    <i class="fas fa-bug fa-5x"></i>
+                </div>
+                <div class="cardsHeadings">
+                    <h3>Allergenicity Testing</h3>
+                </div>
+                <div class="cardsContents">
+                    Identify protein sequences that may trigger allergic responses using known allergen data and
+                    predictive screening techniques.
+                </div>
+            </div>
+            <div class="cards">
+                <div class="cardsImages">
+                    <i class="fa-solid fa-vial-virus fa-5x"></i>
+                </div>
+                <div class="cardsHeadings">
+                    <h3>Antigenicity Test</h3>
+                </div>
+                <div class="cardsContents">
+                    Identify protein regions likely to be recognized as antigens by the immune system during the immune
+                    recognition process.
+                </div>
+            </div>
+            <div class="cards">
+                <div class="cardsImages">
+                    <i class="fa-solid fa-microscope fa-5x"></i>
+                </div>
+                <div class="cardsHeadings">
+                    <h3>Signal Peptide Detection</h3>
+                </div>
+                <div class="cardsContents">
+                    Detect short peptide sequences that guide proteins for secretion outside the cell using biological
+                    sequence analysis.
+                </div>
+            </div>
+        </div>
+        <div class="modulesRow">
+            <div class="cards">
+                <div class="cardsImages">
+                    <i class="fa-solid fa-shield-virus fa-5x"></i>
 
+                </div>
+                <div class="cardsHeadings">
+                    <h3>Epitopes Prediction</h3>
+                </div>
+                <div class="cardsContents">
+                    Predict specific regions within proteins that may act as B-cell or T-cell epitopes during immune
+                    response activation.
+                </div>
+            </div>
+            <div class="cards">
+                <div class="cardsImages">
+                    <i class="fas fa-skull-crossbones fa-5x"></i>
+                </div>
+                <div class="cardsHeadings">
+                    <h3>Toxicity Assessment</h3>
+                </div>
+                <div class="cardsContents">
+                    Analyze protein sequences to detect toxic regions that could potentially harm the host or trigger
+                    adverse reactions.
+                </div>
+            </div>
+            <div class="cards">
+                <div class="cardsImages">
+                    <i class="fas fa-chart-line fa-5x"></i>
 
-               </div>
-               <div class="cardsHeadings">
-                   <h3>Epitopes Prediction</h3>
-               </div>
-               <div class="cardsContents">
-                   Predict specific regions within proteins that may act as B-cell or T-cell epitopes during immune
-                   response activation.
-               </div>
-           </div>
-           <div class="cards">
-               <div class="cardsImages">
-                   <i class="fas fa-skull-crossbones fa-5x"></i>
-               </div>
-               <div class="cardsHeadings">
-                   <h3>Toxicity Assessment</h3>
-               </div>
-               <div class="cardsContents">
-                   Analyze protein sequences to detect toxic regions that could potentially harm the host or trigger
-                   adverse reactions.
-               </div>
-           </div>
-           <div class="cards">
-               <div class="cardsImages">
-                   <i class="fas fa-chart-line fa-5x"></i>
+                </div>
+                <div class="cardsHeadings">
+                    <h3>Comprehensive Results</h3>
+                </div>
+                <div class="cardsContents">
+                    Integrate outputs from all modules to provide a complete report useful for designing safe and
+                    effective vaccines.
+                </div>
+            </div>
+        </div>
 
+    </div>
+    <div id="steps">
+        <div id="stepLanding">
+            <div id="stepHeading">
+                <h1>Streamline Your Vaccine Development Process</h1>
+            </div>
+            <div id="stepContent">
+                Our step-by-step workflow guides you through each analysis phase, from initial sequence input to final
+                candidate evaluation.
+            </div>
+            <div id="stepButtons">
+                <button id="stepMore">
+                    Read Documentation
+                </button>
+            </div>
+        </div>
+        <div class="stepCards">
+            <div class="steps">
+                <div class="circle">1</div>
+                <div class="stepContent">
+                    <h3>
+                        Input Sequence
+                    </h3>
+                    <p>
+                        Upload your fasta file for analysis
+                    </p>
+                </div>
+            </div>
+            <div class="steps">
+                <div class="circle">2</div>
+                <div class="stepContent">
+                    <h3>
+                        Run Multiple Tests
+                    </h3>
+                    <p>
+                        Analyze allergenicity, antigenicity, toxicity and more...
+                    </p>
+                </div>
+            </div>
+            <div class="steps">
+                <div class="circle">3</div>
+                <div class="stepContent">
+                    <h3>
+                        Get Comprehensive Results
+                    </h3>
+                    <p>
+                        Receive unified epitopes after all the tests.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-               </div>
-               <div class="cardsHeadings">
-                   <h3>Comprehensive Results</h3>
-               </div>
-               <div class="cardsContents">
-                   Integrate outputs from all modules to provide a complete report useful for designing safe and
-                   effective vaccines.
-               </div>
-           </div>
-       </div>
-
-
-   </div>
-
-
-<!-- 5. Steps -->
-
-
-   <div id="steps">
-       <div id="stepLanding">
-           <div id="stepHeading">
-               <h1>Streamline Your Vaccine Development Process</h1>
-           </div>
-           <div id="stepContent">
-               Our step-by-step workflow guides you through each analysis phase, from initial sequence input to final
-               candidate evaluation.
-           </div>
-           <div id="stepButtons">
-               <button id="stepMore">
-                   Read Documentation
-               </button>
-           </div>
-       </div>
-       <div class="stepCards">
-           <div class="steps">
-               <div class="circle">1</div>
-               <div class="stepContent">
-                   <h3>
-                       Input Sequence
-                   </h3>
-                   <p>
-                       Upload your fasta file for analysis
-                   </p>
-               </div>
-           </div>
-           <div class="steps">
-               <div class="circle">2</div>
-               <div class="stepContent">
-                   <h3>
-                       Run Multiple Tests
-                   </h3>
-                   <p>
-                       Analyze allergenicity, antigenicity, toxicity and more...
-                   </p>
-               </div>
-           </div>
-           <div class="steps">
-               <div class="circle">3</div>
-               <div class="stepContent">
-                   <h3>
-                       Get Comprehensive Results
-                   </h3>
-                   <p>
-                       Receive unified epitopes after all the tests.
-                   </p>
-               </div>
-           </div>
-       </div>
-
-
-   </div>
-   <!--6. Footer -->
-   <footer id="footer">
+    </div>
+    <!--6. Footer -->
+    <footer id="footer">
        <div class="footer-left">
            <p>&copy; 2025 UniVax. All Rights Reserved</p>
        </div>
        <div class="footer-center">
-           <a href="#">Contact Us</a>
-           <a href="#">Privacy Policy</a>
-           <a href="#">GitHub</a>
-       </div>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="#">GitHub</a>
+        </div>
        <div class="footer-right">
            <span>{{count}} Visitors</span>
        </div>
    </footer>
    <script>
-    const startButton = document.getElementById('startAnalysis');
+    const startButton = document.getElementById('navbarStart');
     startButton.addEventListener('click', function() {
         window.location.href = '/analysis';  
     });
-   </script>
+    </script>
 </body>
 
 </html>

@@ -222,7 +222,18 @@ async def create_and_send_zip(file_list, folder_path, zip_name):
     memory_file.seek(0)
     return await send_file(memory_file, as_attachment=True, attachment_filename=zip_name, mimetype='application/zip')
 
-
+# @app.route('/upload', methods=['POST'])
+# async def upload():
+#     if 'file' not in request.files:
+#         return jsonify({"error": "No file part"}), 400
+#     file = request.files['file']
+#     if file.filename == '':
+#         return jsonify({"error": "No selected file"}), 400
+#     session['uploaded_file'] = session["user_id"]+file.filename
+#     print("Uploaded file:", session['uploaded_file'])
+#     save_path = os.path.join(UPLOAD_FOLDER, session['uploaded_file'])
+#     file.save(save_path)
+#     return jsonify({"message": "File uploaded", "filename": file.filename}), 200
 
 @app.route('/')
 async def index():
@@ -230,6 +241,23 @@ async def index():
     if 'user_id' not in session:
         session['user_id'] = str(uuid.uuid4())
     return await render_template('homepage.html', count=visitor_count)  
+
+@app.route('/documentation')
+async def documentation():
+    return await render_template('documentation.html')
+
+@app.route('/about')
+async def about():
+    return await render_template('about.html')
+
+@app.route('/privacy')
+async def privacy():
+    return await render_template('privacy.html')
+
+@app.route('/contact')
+async def contact():
+    return await render_template('contact.html')
+
 
 @app.route('/analysis', methods=['GET', 'POST'])
 async def analysis():
@@ -240,32 +268,33 @@ async def upload():
     session['step'] = 1 
     if request.method == 'POST':
         files = await request.files
-        print(files)
-        form_data = await request.form
-        if 'default' in form_data:
-            filename = 'default_file.fa'
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'],filename)
-            session['file_path'] = file_path
-        else:
-            file = files.get("file")
-            if not file or file.filename == "":
-                abort(400, description="No file was uploaded. Please go back and upload a fasta file.")
-            filename = file.filename
-            if not filename.endswith('.fa'):
-                abort(422, description="Only .fa files are allowed")
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], session['user_id']+filename)
-            await file.save(file_path)
-            session['file_path'] = file_path
+        # form_data = await request.form
+        # print(form_data)
+        # if 'default' in form_data:
+        #     filename = 'default_file.fa'
+        #     file_path = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+        #     session['file_path'] = file_path
+        # else:
+        file = files.get("file")
+        if not file or file.filename == "":
+            abort(400, description="No file was uploaded. Please go back and upload a fasta file.")
+        filename = file.filename
+        if not filename.endswith('.fa'):
+            abort(422, description="Only .fa files are allowed")
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], session['user_id']+filename)
+        await file.save(file_path)
+        session['file_path'] = file_path
         try:
-            converted_filename=f"{session['user_id']}.csv"
+            session['converted_filename'] = f"{session['user_id']}.csv"
+            # converted_filename=f"{session['user_id']}.csv"
             if not os.path.exists(file_path):
                 print(f"Error: Input file '{file_path}' does not exist!")
                 sys.exit(1)
-            total_sequences = fasta_to_csv(file_path, os.path.join(app.config['OUTPUT_FOLDER'], converted_filename))
+            total_sequences = fasta_to_csv(file_path, os.path.join(app.config['OUTPUT_FOLDER'], session['converted_filename']))
             print(total_sequences)
             # session['file_converted'] = True
-            session['converted_filename'] = converted_filename
-            print(converted_filename)
+            # session['converted_filename'] = converted_filename
+            # print(converted_filename)
             return jsonify({"message": "Success"})
             # return await render_template('step1.html', file_converted=True, converted_filename=session['converted_filename'])
         except Exception as e:
@@ -304,11 +333,16 @@ async def step2():
             os.makedirs(dir_path, exist_ok=True)
             task = batch_processing.apply_async(args=[csv_path, session['user_id'], data])
             print("returned task id")
+            if os.path.exists(dir_path) and os.path.isdir(dir_path):  
+                os.rmdir(dir_path)
             return jsonify({"task_id": task.id})
 
         except Exception as e:
             session['error_message'] = f"Error during Step 2: {str(e)}"
             return jsonify({"message":"Error"})
+        finally:
+            if os.path.exists(dir_path) and os.path.isdir(dir_path):  
+                os.rmdir(dir_path)
         # return redirect(f"/result/{task.id}/step2.html/{dir_path}")
 
     # return await render_template('step2.html', available_sequences=available_sequences, values=dropdown_values, processing=False)
@@ -379,6 +413,8 @@ async def step3():
         finally:
             session['file_processed'] = True
             session['processing'] = False
+            if os.path.exists(dir_path) and os.path.isdir(dir_path):  
+                os.rmdir(dir_path)
     else:
         session['file_processed'] = False
     return jsonify({"message": "Success"})

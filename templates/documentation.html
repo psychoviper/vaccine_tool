@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniVax - Documentation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Gemunu+Libre:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4dd7d93d54.js" crossorigin="anonymous"></script>
+    <style>
+        /* General Layout for Documentation Page */
+        .footer-center a.active {
+            color: black;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.4rem;
+        }
+
+        /* NEW: Body as a CSS Grid Container for overall page layout */
+        body {
+            display: grid;
+            /* Define the grid columns with improved responsiveness for larger screens:
+               1. Flexible left margin (1fr)
+               2. Fixed sidebar width (280px)
+               3. Flexible space between sidebar and content (min 20px, max 100px) - Prevents excessive gap on huge screens
+               4. Fixed max-width for main accordion content (900px)
+               5. Right flexible margin (1fr)
+            */
+            grid-template-columns: 0.1fr [sidebar-start] 280px [sidebar-end] minmax(10px, 3rem) [content-start] minmax(auto, 900px) [content-end] 1fr;
+            min-height: 100vh;
+            /* Ensures body takes full viewport height */
+            /* No margin/padding on body directly, let grid manage spacing */
+        }
+
+        /* Navbar, Hero, and Footer must span all grid columns */
+        #navbar,
+        .doc-hero-scientific,
+        #footer {
+            grid-column: 1 / -1;
+            /* Spans from the first column line to the last */
+        }
+
+
+        .doc-hero-scientific {
+            background: linear-gradient(to bottom, rgb(228, 241, 239), rgb(255, 255, 255));
+            padding: 5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 0;
+        }
+
+        .doc-hero-scientific h1 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 800;
+            font-size: 6rem;
+            color: #262626;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.05rem;
+        }
+
+        .doc-hero-scientific p {
+            font-family: "Inter", sans-serif;
+            font-size: 2.4rem;
+            color: #71717a;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+
+        /* Wrapper for the main content area (sidebar + accordions) within the grid */
+        .main-doc-content-wrapper-grid {
+            grid-column: 1 / -1;
+            /* This wrapper itself spans all columns */
+            display: grid;
+            grid-template-columns: subgrid;
+            /* Its children will align to the parent's (body's) grid lines */
+            padding: 4rem 0;
+            /* Vertical padding for the entire documentation section */
+            align-items: flex-start;
+            /* Aligns items to the top of their grid areas */
+            min-height: 80vh;
+            /* Ensure this section fills vertical space */
+        }
+
+        /* Documentation Sidebar (Positioned in its dedicated grid column) */
+        .doc-sidebar {
+            grid-column: sidebar-start / sidebar-end;
+            /* Place sidebar in the column defined by 'sidebar-start' and 'sidebar-end' */
+            flex-shrink: 0;
+            padding: 3rem;
+            /* Uniform padding inside the sidebar */
+            border-right: 1px solid #e0e0e0;
+            /* Separator border */
+            position: sticky;
+            /* Sticky sidebar */
+            top: 10rem;
+            /* Adjust based on navbar height */
+            align-self: start;
+            /* Align to the top of its grid cell */
+            max-height: calc(100vh - 12rem);
+            /* Limit height and allow scroll */
+            overflow-y: auto;
+            /* Scroll if content overflows */
+            background-color: #f8f9fa;
+            /* Slightly different background to distinguish */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.02);
+            /* Slight shadow on the right */
+        }
+
+        .doc-sidebar h3 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: #262626;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .doc-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .doc-sidebar ul li {
+            margin-bottom: 1rem;
+        }
+
+        .doc-sidebar ul li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            font-family: "Inter", sans-serif;
+            font-size: 1.9rem;
+            color: #71717a;
+            text-decoration: none;
+            border-radius: 0.4rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .doc-sidebar ul li a:hover {
+            background-color: #f0f8ff;
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .doc-sidebar ul li a.active-sidebar-link {
+            background-color: #e8f3f1;
+            color: rgba(106, 71, 131, 255);
+            font-weight: 600;
+        }
+
+        /* Documentation Main Content (The centered accordion section) */
+        .doc-main-content {
+            grid-column: content-start / content-end;
+            /* Place accordions in the column defined by 'content-start' and 'content-end' */
+            width: 100%;
+            /* Fills its grid cell */
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            border-radius: 0.8rem;
+            padding: 3rem;
+            /* Internal padding for the accordion content box */
+        }
+
+
+        /* Accordion Styling (Reused from About/Privacy pages) */
+        .accordion-item {
+            border: 1px solid #e0e0e0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 2.5rem;
+            background-color: #f7f7f7;
+            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-header {
+            background-color: #e8f3f1;
+        }
+
+        .accordion-header:hover {
+            background-color: #eef8f6;
+        }
+
+        .accordion-header h2 {
+            flex-grow: 1;
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            color: rgba(106, 71, 131, 255);
+            margin: 0;
+            padding-left: 0;
+            position: relative;
+        }
+
+        .accordion-header h2 i {
+            font-size: 3rem;
+            margin-right: 15px;
+            color: #9b6eb6;
+        }
+
+        .accordion-icon {
+            font-size: 3.2rem;
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(90deg);
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 2.5rem;
+            background-color: #fff;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 1800px;
+            /* Adjust as needed for content length */
+            padding: 2.5rem;
+        }
+
+        /* Content inside accordion - General paragraphs and lists */
+        .accordion-content p,
+        .accordion-content ul,
+        .accordion-content ol {
+            font-family: "Inter", sans-serif;
+            font-size: 2rem;
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .accordion-content ul li,
+        .accordion-content ol li {
+            font-size: 2rem;
+            /* Ensure consistent font size for list items */
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content h3 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 600;
+            font-size: 2.8rem;
+            color: #333;
+            margin-top: 2.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content ul,
+        .accordion-content ol {
+            padding-left: 3rem;
+        }
+
+        .accordion-content ul li {
+            list-style-type: disc;
+        }
+
+        .accordion-content ol li {
+            list-style-type: decimal;
+        }
+
+        .accordion-content a {
+            color: rgba(106, 71, 131, 255);
+            text-decoration: underline;
+        }
+
+        .citation-box {
+            background-color: #f0f8ff;
+            border-left: 5px solid rgba(106, 71, 131, 255);
+            padding: 2rem 2.8rem;
+            margin-top: 3rem;
+            font-family: "Inter", sans-serif;
+            font-size: 2rem;
+            color: #2a5270;
+        }
+
+        .citation-box p {
+            margin-bottom: 1rem;
+        }
+
+        .citation-box strong {
+            color: rgba(106, 71, 131, 255);
+        }
+
+        /* --- Responsive Adjustments --- */
+
+        /* Adjustment for screens larger than 1440px but smaller than very large ones, e.g., 14-inch laptops that can still fit two columns */
+        @media (max-width: 1440px) {
+            body {
+                /* Adjust max-width of content to make it fit better on smaller laptops,
+                   and slightly reduce the inner gap to keep sidebar closer */
+                grid-template-columns: 1fr [sidebar-start] 280px [sidebar-end] minmax(20px, 60px) [content-start] minmax(auto, 700px) [content-end] 1fr;
+            }
+        }
+        @media (min-width: 1800px) {
+            body {
+                /* Adjust max-width of content to make it fit better on smaller laptops,
+                   and slightly reduce the inner gap to keep sidebar closer */
+                   /* background-color: red; */
+                grid-template-columns: 0.2fr [sidebar-start] 280px [sidebar-end] minmax(20px, 60px) [content-start] minmax(auto, 1400px) [content-end] 1fr;
+            }
+        }
+
+
+        /* Main stacking breakpoint for tablets and smaller laptops */
+        @media (max-width: 1024px) {
+            body {
+                /* On smaller screens, stack the sidebar and main content.
+                   We'll use 3 columns: flexible left, centered content, flexible right.
+                   The sidebar and main content will span across these. */
+                grid-template-columns: 1fr minmax(auto, 95%) 1fr; /* Centered content with 95% width */
+            }
+
+            .main-doc-content-wrapper-grid {
+                padding: 3rem 0; /* Reduce vertical padding */
+            }
+
+            .doc-sidebar {
+                grid-column: 1 / -1;
+                /* Sidebar now spans all columns (full width) */
+                position: static;
+                /* Remove sticky behavior */
+                max-height: none;
+                overflow-y: visible;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+                /* Add bottom border instead */
+                box-shadow: none;
+                /* Remove shadow when stacked */
+                padding: 2.5rem 1.5rem;
+                /* Adjust padding for top-stacked sidebar */
+            }
+
+            .doc-sidebar h3 {
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .doc-sidebar ul {
+                display: flex;
+                /* Make sidebar links horizontal */
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+                /* Space between horizontal links */
+            }
+
+            .doc-sidebar ul li {
+                margin-bottom: 0;
+            }
+
+            .doc-sidebar ul li a {
+                padding: 0.8rem 1.2rem;
+                font-size: 1.8rem;
+            }
+
+            .doc-main-content {
+                grid-column: 2 / 3;
+                /* Main content goes into the new centered column */
+                max-width: 100%;
+                /* Fill the available space of its grid cell */
+                margin: 2rem auto;
+                /* Add some top margin to separate from sidebar */
+                padding: 2rem;
+            }
+
+            .doc-hero-scientific h1 {
+                font-size: 4.8rem;
+            }
+
+            .doc-hero-scientific p {
+                font-size: 2.2rem;
+            }
+
+            .accordion-header {
+                padding: 1.8rem 2rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2.6rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2.5rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.8rem;
+            }
+
+            .accordion-content {
+                padding: 0 2rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 2rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.8rem;
+            }
+
+            .accordion-content ul li,
+            .accordion-content ol li {
+                font-size: 1.8rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 2.4rem;
+            }
+
+            .citation-box {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-doc-content-wrapper-grid {
+                padding: 2rem 0;
+            }
+
+            .doc-hero-scientific h1 {
+                font-size: 4rem;
+            }
+
+            .doc-hero-scientific p {
+                font-size: 2rem;
+            }
+
+            .doc-sidebar ul li a {
+                font-size: 1.7rem;
+            }
+
+            .accordion-item {
+                margin-bottom: 1.5rem;
+            }
+
+            .accordion-header {
+                padding: 1.5rem 1.8rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2.2rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.5rem;
+            }
+
+            .accordion-content {
+                padding: 0 1.8rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.8rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.7rem;
+            }
+
+            .accordion-content ul li,
+            .accordion-content ol li {
+                font-size: 1.7rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 2.2rem;
+            }
+
+            .citation-box {
+                padding: 1.5rem 2rem;
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .doc-hero-scientific h1 {
+                font-size: 3.2rem;
+            }
+
+            .doc-hero-scientific p {
+                font-size: 1.8rem;
+            }
+
+            .doc-sidebar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .doc-sidebar ul li a {
+                font-size: 1.6rem;
+            }
+
+            .accordion-header {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.2rem;
+            }
+
+            .accordion-content {
+                padding: 0 1.5rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.5rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.6rem;
+            }
+
+            .accordion-content ul li,
+            .accordion-content ol li {
+                font-size: 1.6rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .citation-box {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar">
+        <div id="navbarLogo">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
+            <span id="navbarTitle">
+                <span id="navbarTitle1">Uni</span>
+                <span id="navbarTitle2">Vax</span>
+            </span>
+        </div>
+        <div id="navbarMenu">
+            <div><a href="{{ url_for('index') }}">Home</a></div>
+            <div><a href="{{ url_for('documentation') }}" class="active">Documentation</a></div>
+            <div><a href="{{ url_for('about') }}">About</a></div>
+        </div>
+        <div id="navbarStart">
+            <button>Start Analysis</button>
+        </div>
+    </div>
+
+    <div class="doc-hero-scientific">
+        <h1>Documentation</h1>
+        <p>A comprehensive guide to utilizing the UniVax platform for vaccine candidate screening.</p>
+    </div>
+
+    <div class="main-doc-content-wrapper-grid">
+        <div class="doc-sidebar">
+            <h3>Documentation Sections</h3>
+            <ul>
+                <li><a href="#overview" class="active-sidebar-link" data-target="overview-content">Platform Overview</a>
+                </li>
+                <li><a href="#workflow" data-target="workflow-content">Workflow Documentation</a></li>
+                <li><a href="#faq" data-target="faq-content">Frequently Asked Questions</a></li>
+                <li><a href="#support" data-target="support-content">Contact & Support</a></li>
+                </ul>
+        </div>
+
+        <div class="doc-main-content">
+            <div id="overview-content" class="doc-section-content">
+                <div class="accordion-item open">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-desktop"></i>Platform Overview</h2>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>UniVax is a comprehensive bioinformatics platform engineered to
+                            significantly streamline the vaccine development process through the application of advanced
+                            computational methodologies. It integrates a meticulously selected suite of established
+                            prediction and analysis tools into a single, cohesive, and automated workflow, thereby
+                            simplifying the intricate task of identifying and validating potential vaccine
+                            candidates.</p>
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li>Streamlined Multi-step Workflow: Provides a sequential and logical
+                                progression from initial sequence analysis to the final characterization of vaccine
+                                properties.</li>
+                            <li>Integration of Industry-Standard Bioinformatics Tools: Leverages the
+                                power of widely recognized and validated tools for accurate and reliable predictions.
+                            </li>
+                            <li>Comprehensive Result Visualization and Analysis: Offers intuitive
+                                graphical and tabular representations of complex biological data for ease of
+                                interpretation.</li>
+                            <li>Downloadable Reports and Data: Enables users to export processed data
+                                and detailed reports at each critical step of the analysis pipeline for further
+                                external examination or record-keeping.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="workflow-content" class="doc-section-content" style="display: none;">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-cogs"></i>Workflow Documentation: Step-by-Step Guide
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The UniVax platform orchestrates a robust, multi-stage bioinformatics pipeline designed to
+                            systematically screen and characterize potential vaccine candidates. Below is a detailed
+                            breakdown of each sequential step:</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-upload"></i>Step 1: FASTA Sequence Upload</h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The initial phase of any UniVax analysis commences with the upload of protein sequence data.
+                        </p>
+                        <h3>Input Requirements:</h3>
+                        <ul>
+                            <li>File Format: The platform exclusively accepts files in
+                                standard FASTA format (e.g., `.fasta`, `.fa`, or `.txt` containing FASTA-formatted
+                                sequences).</li>
+                            <li>Sequence Content: Each sequence within the file must adhere to the
+                                FASTA header convention, beginning with a '>' symbol followed by a unique sequence
+                                identifier, and subsequent lines containing the protein sequence data. Multiple sequences
+                                are supported within a single file.</li>
+                            <li>Data Handling: For privacy and security, uploaded FASTA files are
+                                temporarily stored only for the duration of your active session and are automatically
+                                purged upon session termination or analysis completion.</li>
+                        </ul>
+                        <p>To proceed, click the "Upload FASTA" button and select your sequence file. A progress
+                            indicator will confirm successful upload and initial parsing.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-chart-bar"></i>Step 2: Initial Sequence Analysis</h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Following a successful upload, the platform initiates a preliminary analysis of the submitted
+                            sequences using integrated screening tools. This step is crucial for broad-spectrum
+                            characterization and early elimination of undesirable candidates.</p>
+                        <h3>Integrated Tools & Functions:</h3>
+                        <ul>
+                            <li>AlgPred 2.0: Utilized for predicting the allergenicity
+                                potential of protein sequences. A high score indicates a higher likelihood of causing an
+                                allergic reaction. Configure the prediction threshold to adjust stringency.</li>
+                            <li>VaxiJen v2.0: Employs alignment-independent prediction
+                                of protective antigens. This tool assesses the overall antigenicity (potential to
+                                provoke an immune response) of the sequences. Users can select specific organism types
+                                (e.g., bacterial, viral) to fine-tune predictions.</li>
+                            <li>Phobius: Predicts transmembrane topology and
+                                signal peptides within the protein sequences. This is vital for identifying secreted
+                                proteins or those localized to the cell surface, which are often preferred vaccine
+                                targets.</li>
+                        </ul>
+                        <h3>Configuration & Results:</h3>
+                        <p>Users have the option to select specific sequence ranges for focused analysis. Each tool
+                            allows for parameter configuration (e.g., prediction thresholds, organism specificity). The
+                            results dashboard will display a summary indicating the number of sequences that passed or
+                            failed each analysis criterion, providing immediate insights into the broad characteristics
+                            of your input data.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-crosshairs"></i>Step 3: Epitope Prediction</h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>This critical phase focuses on identifying specific immunogenic regions (epitopes) within the
+                            protein sequences. UniVax integrates multiple advanced epitope prediction algorithms.</p>
+                        <h3>Integrated Tools & Functions:</h3>
+                        <ul>
+                            <li>ABCPred: Predicts linear B-cell epitopes, which are
+                                recognized by antibodies and crucial for humoral immunity. Users can adjust the minimum
+                                score threshold.</li>
+                            <li>NetCTL: Specialized for predicting cytotoxic
+                                T-lymphocyte (CTL) epitopes binding to various MHC class I alleles. This is essential
+                                for inducing cellular immune responses.</li>
+                            <li>NetMHCpan-4.1: Predicts peptide binding to a broad
+                                range of MHC Class I molecules, offering a comprehensive assessment of T-cell epitope
+                                potential.</li>
+                            <li>NetMHCIIpan-4.0 MHC: Predicts peptide binding to
+                                MHC Class II molecules, vital for helper T-cell responses. Users can select specific
+                                MHC-II alleles for analysis.</li>
+                        </ul>
+                        <h3>Configuration & Results:</h3>
+                        <p>For each tool, users can configure parameters such as allele specificity (for MHC-binding
+                            tools), prediction thresholds, and epitope length. The results will be presented with a clear
+                            count of identified epitopes for each tool, along with detailed coordinates and scores within
+                            the original sequences.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-shield-alt"></i>Step 4: Vaccine Properties Validation
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>After epitope prediction, the identified candidates undergo rigorous validation to ensure
+                            they possess desirable vaccine properties, focusing on safety and immunogenicity.</p>
+                        <h3>Validation Criteria:</h3>
+                        <ul>
+                            <li>Allergenicity Screening (re-validation): Confirms that the predicted
+                                epitopes themselves are non-allergenic, using refined algorithms or re-evaluating
+                                against updated allergen databases.</li>
+                            <li>Antigenicity Confirmation: Ensures that the identified epitopes retain
+                                sufficient antigenicity to elicit a strong immune response, often re-assessed at the
+                                epitope level.</li>
+                            <li>ToxinPred: Integrates prediction for non-toxic
+                                epitopes. This crucial step verifies that the selected epitopes are not associated with
+                                any known toxic properties.</li>
+                        </ul>
+                        <h3>Results & Candidate Identification:</h3>
+                        <p>The results dashboard will highlight the number of epitopes that successfully passed each of
+                            these critical validation criteria. This refined subset represents the most viable vaccine
+                            candidates, ready for further experimental validation or multi-epitope construct design.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-chart-line"></i>Step 5: Final Results & Reporting
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The conclusive stage provides a comprehensive summary of the entire analysis, consolidating
+                            all findings and presenting the most promising vaccine candidates.</p>
+                        <h3>Key Output Metrics:</h3>
+                        <ul>
+                            <li>Total Viable Epitopes: A definitive count of all epitopes that
+                                successfully navigated every analytical and validation step.</li>
+                            <li>Estimated Population Coverage: (Future Integration) Provides an
+                                estimation of the global population coverage based on the predicted MHC binding profiles
+                                of the selected epitopes, ensuring broad applicability.</li>
+                            <li>Overall Immunogenicity & Safety Scores: Aggregated scores reflecting
+                                the cumulative predicted immunogenicity and safety profile of the top candidates.</li>
+                        </ul>
+                        <h3>Reporting & Export:</h3>
+                        <p>Users can download detailed reports in various formats (e.g., PDF, CSV) containing all raw
+                            and processed data, visualization charts, and comprehensive summaries. This allows for
+                            seamless integration with other bioinformatics workflows and facilitates documentation of
+                            the discovery process.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="faq-content" class="doc-section-content" style="display: none;">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-question-circle"></i>Frequently Asked Questions
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Here are answers to common questions regarding the UniVax platform:</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-file-alt"></i>What file formats are accepted for
+                            sequence upload?</h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The UniVax platform exclusively accepts standard FASTA format
+                                files. Accepted file extensions include `.fasta`, `.fa`, or `.txt` (provided the
+                            content is FASTA formatted). Each sequence within the file must begin with a header line
+                            (starting with '>') followed by the sequence identifier.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-hourglass-half"></i>How long does the analysis
+                            process take?</h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The processing time for your analysis is primarily contingent on several factors: the total
+                            number of sequences submitted, the cumulative length of these sequences, and the current
+                            load on our integrated server infrastructure. Typically, each major analytical step (e.g.,
+                            Sequence Analysis, Epitope Prediction) can range from a few minutes for smaller datasets to
+                            several hours for extensive, large-scale submissions.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-save"></i>Can I save my progress and return later?
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Yes, the UniVax platform is designed to automatically preserve your progress at each
+                            completed step of the analysis pipeline. Upon initiation of an analysis, a unique job ID
+                            will be generated and displayed. You can utilize this job ID to resume your analysis at a
+                            later time, allowing for flexible workflow management.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-sliders-h"></i>What do the threshold values mean?
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Threshold values are user-configurable parameters that directly influence the stringency and
+                            specificity of the predictive algorithms employed by the integrated tools. Adjusting these
+                            thresholds allows you to fine-tune the balance between sensitivity and specificity in your
+                            results:</p>
+                        <ul>
+                            <li>Higher Thresholds: Generally lead to fewer but highly confident
+                                predictions, minimizing false positives.</li>
+                            <li>Lower Thresholds: Tend to identify a broader range of candidates,
+                                including those with lower confidence, which may increase the number of potential false
+                                positives but ensures no viable candidates are missed.</li>
+                        </ul>
+                        <p>It is recommended to experiment with different thresholds based on your research objectives
+                            and the characteristics of your dataset.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-chart-pie"></i>How can I interpret the results?
+                        </h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>The UniVax platform provides detailed summaries, interactive tables, and intuitive
+                            visualizations to facilitate the interpretation of your analytical results. In general,
+                            protein sequences or specific epitopes that successfully meet all specified criteria
+                            (e.g., non-allergenic, highly antigenic, non-toxic, and predicted to bind relevant MHC
+                            molecules) are considered the most promising vaccine candidates.</p>
+                        <p>A comprehensive explanation of each metric, score, and visualization element is integrated
+                            within the respective sections of this documentation and also accessible directly within the
+                            results interface. Should you require further clarification, please refer to the "Contact
+                            and Support" section.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="support-content" class="doc-section-content" style="display: none;">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h2 class="section-title"><i class="fas fa-life-ring"></i>Contact and Support</h2>
+                        <i class="fas fa-chevron-right accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>For any inquiries, technical assistance, or feedback regarding the UniVax platform, please do
+                            not hesitate to reach out to our dedicated support team:</p>
+                        <ul class="contact-list">
+                            <li><i class="fas fa-envelope"></i>General Inquiries: <a
+                                    href="mailto:amitprasad@iitmandi.ac.in">amitprasad@iitmandi.ac.in</a></li>
+                            <li><i class="fas fa-envelope"></i>Technical Support (Sufi Hussain): <a
+                                    href="mailto:b20015@students.iitmandi.ac.in">b20015@students.iitmandi.ac.in</a>
+                            </li>
+                            <li><i class="fas fa-envelope"></i>Technical Support (Shubham Prakash): <a
+                                    href="mailto:b20021@students.iitmandi.ac.in">b20021@students.iitmandi.ac.in</a>
+                            </li>
+                        </ul>
+                        <p>We aim to respond to all inquiries within 24-48 business hours.</p>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer-left">
+            <p>&copy; 2025 UniVax. All Rights Reserved</p>
+        </div>
+        <div class="footer-center">
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="#">GitHub</a>
+        </div>
+    </footer>
+
+    <script>
+        const startButton = document.getElementById('navbarStart');
+        startButton.addEventListener('click', function() {
+            window.location.href = '/analysis';  
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle accordion toggle
+            function setupAccordions(containerId) {
+                const accordionItems = document.querySelectorAll(`#${containerId} .accordion-item`);
+
+                accordionItems.forEach(item => {
+                    const header = item.querySelector('.accordion-header');
+                    const content = item.querySelector('.accordion-content');
+                    const icon = item.querySelector('.accordion-icon');
+
+                    // Remove existing event listeners to prevent duplicates if called multiple times
+                    // and re-attach to cloned header
+                    const clonedHeader = header.cloneNode(true);
+                    header.parentNode.replaceChild(clonedHeader, header);
+
+                    clonedHeader.addEventListener('click', function () {
+                        // Toggle current accordion
+                        item.classList.toggle('open');
+                        if (item.classList.contains('open')) {
+                            content.style.maxHeight = content.scrollHeight + 30 + "px"; // Add some buffer
+                            icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+                        } else {
+                            content.style.maxHeight = "0";
+                            icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+                        }
+                    });
+                });
+            }
+
+            // Sidebar functionality
+            const sidebarLinks = document.querySelectorAll('.doc-sidebar ul li a');
+            const docSections = document.querySelectorAll('.doc-section-content');
+
+            function showSection(targetId) {
+                docSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.style.display = 'block';
+                        // Open the first accordion in the newly shown section automatically
+                        const firstAccordion = section.querySelector('.accordion-item');
+                        if (firstAccordion) {
+                            // Ensure all accordions in the target section are closed first, then open the first one
+                            section.querySelectorAll('.accordion-item').forEach(item => {
+                                item.classList.remove('open');
+                                item.querySelector('.accordion-content').style.maxHeight = '0';
+                                item.querySelector('.accordion-icon').classList.replace('fa-chevron-down', 'fa-chevron-right');
+                            });
+
+                            firstAccordion.classList.add('open');
+                            firstAccordion.querySelector('.accordion-content').style.maxHeight = firstAccordion.querySelector('.accordion-content').scrollHeight + 30 + "px";
+                            firstAccordion.querySelector('.accordion-icon').classList.replace('fa-chevron-right', 'fa-chevron-down');
+                        }
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+                // Setup accordions for the currently visible section after it's displayed
+                setupAccordions(targetId);
+            }
+
+            // Handle sidebar link clicks
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.target;
+
+                    // Remove active class from all links
+                    sidebarLinks.forEach(l => l.classList.remove('active-sidebar-link'));
+                    // Add active class to clicked link
+                    this.classList.add('active-sidebar-link');
+
+                    showSection(targetId);
+
+                    // Update URL hash without page reload
+                    history.pushState(null, '', `#${this.getAttribute('href').substring(1)}`);
+                });
+            });
+
+            // Handle initial load based on URL hash
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash) {
+                const targetLink = document.querySelector(`.doc-sidebar ul li a[href="#${initialHash}"]`);
+                if (targetLink) {
+                    // Simulate click to activate section and styling
+                    targetLink.click();
+                } else {
+                    // Fallback to overview if hash is invalid
+                    showSection('overview-content');
+                    document.querySelector('.doc-sidebar ul li a[data-target="overview-content"]').classList.add('active-sidebar-link');
+                }
+            } else {
+                // Default to showing the overview section on first load
+                showSection('overview-content');
+            }
+        });
+    </script>
+</body>
+
+</html>

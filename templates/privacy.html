@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniVax - Privacy Policy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Gemunu+Libre:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4dd7d93d54.js" crossorigin="anonymous"></script>
+    <style>
+        /* CSS for Privacy Policy - Scientific Computational Tool Design (Accordion Version) */
+        .footer-center a.active {
+            color: black;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.4rem;
+        }
+
+        /* Main content container for the scientific look */
+        .scientific-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 6rem 3rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Hero section for the privacy page */
+        .privacy-hero-scientific {
+            background: linear-gradient(to bottom, rgb(228, 241, 239), rgb(255, 255, 255));
+            padding: 5rem 2rem;
+            text-align: center;
+            /* margin-bottom: 4rem; */
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .privacy-hero-scientific h1 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 800;
+            font-size: 6rem;
+            color: #262626;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.05rem;
+        }
+
+        .privacy-hero-scientific p {
+            font-family: "Inter", sans-serif;
+            font-size: 2.4rem;
+            color: #71717a;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Accordion Item Styling */
+        .accordion-item {
+            border: 1px solid #e0e0e0;
+            margin-bottom: 2rem;
+            /* Space between accordion items */
+            border-radius: 0.5rem;
+            /* Slight rounding for scientific feel */
+            overflow: hidden;
+            /* Ensures content is clipped */
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 2.5rem;
+            /* Padding for header */
+            background-color: #f7f7f7;
+            /* Light background for header */
+            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-header {
+            background-color: #e8f3f1;
+            /* Lighter background when open */
+        }
+
+        .accordion-header:hover {
+            background-color: #eef8f6;
+            /* Hover effect */
+        }
+
+        .accordion-header h2 {
+            flex-grow: 1;
+            /* Allow title to take space */
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            /* Adjusted for header */
+            color: rgba(106, 71, 131, 255);
+            /* Purple for main section titles */
+            margin: 0;
+            /* Reset default h2 margin */
+            padding-left: 0;
+            /* Reset default padding */
+            position: relative;
+            /* For the internal icon */
+        }
+
+        /* Section icon within h2 (The left icon for each section) */
+        .accordion-header h2 i {
+            font-size: 3rem;
+            /* Increased size for the left icon */
+            margin-right: 15px;
+            color: #9b6eb6;
+        }
+
+        /* Dropdown icon (chevron) */
+        .accordion-icon {
+            font-size: 3.2rem;
+            /* Increased size for the chevron icon */
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(90deg);
+            /* Rotate icon when open */
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            /* Smooth transition */
+            padding: 0 2.5rem;
+            /* Initial padding, will expand */
+            background-color: #fff;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 1000px;
+            /* Large enough to accommodate content */
+            padding: 2.5rem;
+            /* Expanded padding */
+        }
+
+        /* Content inside accordion */
+        .accordion-content p,
+        .accordion-content ul,
+        .accordion-content ol {
+            font-family: "Inter", sans-serif;
+            font-size: 2rem;
+            /* Increased font size */
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .accordion-content h3 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 600;
+            font-size: 2.8rem;
+            color: #333;
+            margin-top: 2.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content ul,
+        .accordion-content ol {
+            padding-left: 3rem;
+        }
+
+        .accordion-content ul li {
+            list-style-type: disc;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content ol li {
+            list-style-type: decimal;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content a {
+            color: rgba(106, 71, 131, 255);
+            text-decoration: underline;
+        }
+
+        .citation-box {
+            background-color: #f0f8ff;
+            border-left: 5px solid rgba(106, 71, 131, 255);
+            padding: 2rem 2.8rem;
+            margin-top: 3rem;
+            font-family: "Inter", sans-serif;
+            font-size: 2rem;
+            color: #2a5270;
+        }
+
+        .citation-box p {
+            margin-bottom: 1rem;
+        }
+
+        .citation-box strong {
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .accordion-content ul.contact-list {
+    list-style: none; /* Remove default bullet points */
+    padding-left: 0; /* Remove default padding */
+}
+
+.accordion-content ul.contact-list li {
+    display: flex; /* Use flexbox for alignment of icon and text */
+    align-items: center; /* Vertically align items */
+    margin-bottom: 1.5rem; /* Space between list items */
+    /* Remove font-size from here as it will be on the anchor tag now */
+    color: #444; /* Match text color for any static text in the li */
+}
+
+.accordion-content ul.contact-list li i {
+    font-size: 2.2rem; /* Slightly larger icon */
+    margin-right: 1.2rem; /* Space between icon and text */
+    color: rgba(106, 71, 131, 255); /* Icon color */
+}
+
+.accordion-content ul.contact-list li a {
+    color: rgba(106, 71, 131, 255);
+    text-decoration: none; /* Remove underline by default */
+    transition: text-decoration 0.3s ease; /* Smooth underline on hover */
+    font-size: 2rem; /* <--- **FIXED: Apply font-size directly to the anchor tag** */
+    line-height: 1.5; /* Ensure good line spacing for the text */
+}
+
+.accordion-content ul.contact-list li a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Responsive adjustments for the contact list */
+@media (max-width: 1024px) {
+    .accordion-content ul.contact-list li a {
+        font-size: 1.8rem;
+    }
+    .accordion-content ul.contact-list li i {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .accordion-content ul.contact-list li a {
+        font-size: 1.7rem;
+    }
+    .accordion-content ul.contact-list li i {
+        font-size: 1.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .accordion-content ul.contact-list li a {
+        font-size: 1.6rem;
+    }
+    .accordion-content ul.contact-list li i {
+        font-size: 1.8rem;
+    }
+}
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .scientific-container {
+                padding: 4rem 1.5rem;
+            }
+
+            .privacy-hero-scientific h1 {
+                font-size: 4.8rem;
+            }
+
+            .privacy-hero-scientific p {
+                font-size: 2.2rem;
+            }
+
+            .accordion-header {
+                padding: 1.8rem 2rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2.6rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2.5rem;
+            }
+
+            /* Responsive icon adjustment */
+            .accordion-icon {
+                font-size: 2.8rem;
+            }
+
+            /* Responsive icon adjustment */
+            .accordion-content {
+                padding: 0 2rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 2rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.8rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 2.4rem;
+            }
+
+            .citation-box {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .scientific-container {
+                padding: 3rem 1rem;
+            }
+
+            .privacy-hero-scientific h1 {
+                font-size: 4rem;
+            }
+
+            .privacy-hero-scientific p {
+                font-size: 2rem;
+            }
+
+            .accordion-item {
+                margin-bottom: 1.5rem;
+            }
+
+            .accordion-header {
+                padding: 1.5rem 1.8rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2.2rem;
+            }
+
+            /* Responsive icon adjustment */
+            .accordion-icon {
+                font-size: 2.5rem;
+            }
+
+            /* Responsive icon adjustment */
+            .accordion-content {
+                padding: 0 1.8rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.8rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.7rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 2.2rem;
+            }
+
+            .citation-box {
+                padding: 1.5rem 2rem;
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .privacy-hero-scientific h1 {
+                font-size: 3.2rem;
+            }
+
+            .privacy-hero-scientific p {
+                font-size: 1.8rem;
+            }
+
+            .accordion-header {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2rem;
+            }
+
+            /* Responsive icon adjustment */
+            .accordion-icon {
+                font-size: 2.2rem;
+            }
+
+            /* Responsive icon adjustment */
+            .accordion-content {
+                padding: 0 1.5rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.5rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.6rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .citation-box {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar">
+        <div id="navbarLogo">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
+            <span id="navbarTitle">
+                <span id="navbarTitle1">Uni</span>
+                <span id="navbarTitle2">Vax</span>
+            </span>
+        </div>
+        <div id="navbarMenu">
+            <div><a href="{{ url_for('index') }}">Home</a></div>
+            <div><a href="{{ url_for('documentation') }}">Documentation</a></div>
+            <div><a href="{{ url_for('about') }}" class="active">About</a></div>
+        </div>
+        <div id="navbarStart">
+            <button>Start Analysis</button>
+        </div>
+    </div>
+
+    <div class="privacy-hero-scientific">
+        <h1>Privacy Policy</h1>
+        <p>Understand how UniVax handles your data and integrates with external resources for scientific analysis.</p>
+    </div>
+
+    <div class="scientific-container">
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-info-circle"></i>Introduction</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>This policy details data practices for UniVax, an automated framework for vaccine candidate
+                    screening. Your privacy and trust are paramount.</p>
+            </div>
+        </div>
+
+        <!-- <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-book-open"></i>Information Collected</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <h3>User-Submitted Data:</h3>
+                <ul>
+                    <li>FASTA File (Biological Sequence Data): Your uploaded FASTA file is temporarily stored to perform
+                        analysis. It is deleted immediately after you exit the website session.</li>
+                    <li>Contact Information: Collected only if you directly contact us, used solely for responding to
+                        your inquiries.</li>
+                </ul>
+                <h3>Automatically Logged Data:</h3>
+                <ul>
+                    <li>Usage Data: Anonymous data (e.g., IP address, browser type) is collected to improve service
+                        performance. This data is aggregated and anonymized.</li>
+                    <li>Cookies: Basic cookies may be used for website functionality.</li>
+                </ul>
+            </div>
+        </div> -->
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-book-open"></i>Information Collected</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>At UniVax, we prioritize user privacy. The only data we collect is the FASTA
+                    file you upload for analysis. No personal information, login credentials, or
+                    identifiable data is required to access or use the platform.</p>
+            </div>
+        </div>
+
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-lightbulb"></i>Purpose of Data Use</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>Data is used to: process your analyses, respond to inquiries, improve UniVax, and ensure service
+                    security.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-cloud-upload-alt"></i>Third-Party Tools & Data Sources</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>UniVax operates as an aggregator and orchestrator of various publicly available bioinformatics tools
+                    and databases. Our platform uses web scraping and API integrations to interface with these
+                    third-party resources (e.g., AlgPred 2.0, Phobius, ABCPred, NetCTL Servers, IEDB) to conduct
+                    comprehensive analyses.</p>
+                <div class="citation-box">
+                    <p>When your sequence data is transmitted to these external tools, it is subject to their individual
+                        privacy policies and terms of use. We strongly advise reviewing their documentation for data
+                        handling details.</p>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-book"></i>Mandatory Scientific Citation</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>Results generated through UniVax rely on underlying external tools and scientific methodologies.</p>
+                <div class="citation-box">
+                    <p> If you utilize UniVax's results in any scholarly work (publications,
+                        presentations, etc.), it is mandated by good scientific practice to properly acknowledge and
+                        cite the original authors, their publications, and the official websites of each specific tool
+                        or database that contributed to your analysis. This ensures appropriate attribution and
+                        acknowledges foundational scientific contributions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-clock"></i>Data Retention</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>Your FASTA file is stored temporarily and periodically deleted from our servers.
+                    Other than this, UniVax does not store any user data.
+                    Anonymized usage logs may be retained solely for performance analysis.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i>Policy Modifications</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>This policy may evolve. Any updates will be posted on this page.</p>
+            </div>
+        </div>
+
+        <!-- <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-phone"></i>Contact Information</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>For questions regarding this policy, contact us:</p>
+                <ul>
+                    <li>General Inquiries: <a href="mailto:amitprasad@iitmandi.ac.in">amitprasad@iitmandi.ac.in</a></li>
+                    <li>Technical Support: <a
+                            href="mailto:b20015@students.iitmandi.ac.in">b20015@students.iitmandi.ac.in</a> (Sufi
+                        Hussain)</li>
+                    <li>Technical Support: <a
+                            href="mailto:b20021@students.iitmandi.ac.in">b20021@students.iitmandi.ac.in</a> (Shubham
+                        Prakash)</li>
+                </ul>
+            </div>
+        </div> -->
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-phone"></i>Contact Information</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>For questions regarding this policy, contact us:</p>
+                <ul class="contact-list">
+                    <li><i class="fas fa-envelope"></i> <a
+                            href="mailto:amitprasad@iitmandi.ac.in"> General Inquiries: Prof. Amit Prasad</a></li>
+                    <li><i class="fas fa-envelope"></i><a
+                            href="mailto:b20015@students.iitmandi.ac.in">Technical Support:  Sufi Hussain</a> </li>
+                    <li><i class="fas fa-envelope"></i><a
+                            href="mailto:b20021@students.iitmandi.ac.in">Technical Support:  Shubham Prakash</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <footer id="footer">
+        <div class="footer-left">
+            <p>&copy; 2025 UniVax. All Rights Reserved</p>
+        </div>
+        <div class="footer-center">
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="#">GitHub</a>
+        </div>
+    </footer>
+
+    <script>
+        const startButton = document.getElementById('navbarStart');
+        startButton.addEventListener('click', function() {
+            window.location.href = '/analysis';  
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function () {
+                    const accordionItem = this.closest('.accordion-item');
+                    const accordionContent = this.nextElementSibling; // The div.accordion-content
+                    const icon = this.querySelector('.accordion-icon');
+
+                    // Toggle the 'open' class on the accordion item
+                    accordionItem.classList.toggle('open');
+
+                    // Set max-height for smooth transition
+                    if (accordionItem.classList.contains('open')) {
+                        accordionContent.style.maxHeight = accordionContent.scrollHeight + 30 + "px";
+                        icon.classList.replace('fa-chevron-right', 'fa-chevron-down'); // Change icon to point down
+                    } else {
+                        accordionContent.style.maxHeight = "0";
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-right'); // Change icon back to point right
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

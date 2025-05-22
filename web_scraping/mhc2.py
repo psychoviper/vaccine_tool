@@ -52,7 +52,7 @@ async def scrape_ifn_epitope(session, df, output_file, peptide_length, selected_
                             print(f"> Job finished. Extracting results...")
                             lines = pre_tag.text.splitlines()
                             for line in lines:
-                                if "<= SB" in line:  # Identify lines with epitopes
+                                if "<=SB" in line:  # Identify lines with epitopes
                                     parts = line.split()
                                     epitope = parts[2]  # Assuming 4th column is Epitope
                                     allele=parts[1] 

@@ -23,7 +23,11 @@ async def scrape_allergen(session, batch_length, batch_index, batch_fasta_path, 
                 result_cells = soup.find_all("td")
                 results = [result_cells[6 + i * 6].get_text().strip() if i * 6 + 6 < len(result_cells) else "Error" for i in range(batch_length)]
                 print(f"Batch {batch_index + 1} of Allergen processed successfully.")
+                # print("Allergen Results:", results)
                 return (results, batch_index, "Allergen Test")
+            else:
+                print(f"Batch {batch_index + 1}: Allergen Server returned status {response.status}, {response}.")
+                return (["Network Error"] * batch_length, batch_index, "Allergen Test")
     except Exception as e:
         print(f"Error in Allergen Batch {batch_index + 1}: {e}")
-        return (["Error"] * batch_length, batch_index, "Allergen Test")
+        return ([f"Error: {e}"] * batch_length, batch_index, "Allergen Test")

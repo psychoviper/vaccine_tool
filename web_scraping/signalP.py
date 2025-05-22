@@ -35,6 +35,7 @@ async def scrape_signalP(session, batch_length, batch_index, batch_fasta_path, u
                 results = ["Found" if re.split(r'\s+', line.strip())[-2]=='Y' else "Not Found" for line in lines ]
                 # print(results)
                 print(f"Batch {batch_index + 1} of Signal P processed successfully.")
+                # print("Signal P Results:", results)
                 return (results,batch_index,'Signal P')
             
             else:

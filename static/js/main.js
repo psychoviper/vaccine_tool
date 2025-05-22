@@ -199,6 +199,7 @@ function setupStepNavigation() {
   
   // Retry buttons for errors
   document.getElementById('retryStep2')?.addEventListener('click', function() {
+    console.log('clicked retry 2')
     hideError('errorStep2');
     document.getElementById('step2Submit').click();
   });
@@ -557,6 +558,10 @@ function showResults(resultsId) {
   document.getElementById(resultsId).style.display = 'block';
 }
 
+function hideResults(resultsId) {
+  document.getElementById(resultsId).style.display = 'none';
+}
+
 /**
  * Show error state for a step
  * @param {string} errorId - The ID of the error element to show
@@ -741,6 +746,8 @@ function collectStep2DataAndSend() {
 
   // Start loading UI
   showLoading('loadingStep2');
+  hideResults('step2Results');
+  hideError('errorStep2');
 
   // Send task to backend
   fetch('/step2', {
@@ -838,6 +845,8 @@ function collectStep3DataAndSend() {
 
   // Start loading UI
   showLoading('loadingStep3');
+  hideError('errorStep3');
+  hideResults('step3Results');
 
   // Send task to backend
   fetch('/step3', {
@@ -860,7 +869,7 @@ function collectStep3DataAndSend() {
             clearInterval(pollInterval);
             hideLoading('loadingStep3');
             showResults('step3Results');
-            populateMockEpitopeTable();
+            // populateMockEpitopeTable();
             console.log('Task result:', statusResult.result);
 
             // Update results here with real data
@@ -925,6 +934,8 @@ function collectStep4DataAndSend() {
 
   // Start loading UI
   showLoading('loadingStep4');
+  hideResults('step4Results');
+  hideError('errorStep4');
 
   // Send task to backend
   fetch('/step4', {

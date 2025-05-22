@@ -21,10 +21,13 @@ def parse_fasta_sequences(fasta_str: str) -> List[str]:
 def predict_antigens(prediction_type: str, sequence_input: str, lag=8):
     if(prediction_type == "bacteria"):
         model_type = "bacterial_model.pkl"
+        lag=8
     elif(prediction_type == "virus"):
         model_type = "viral_model.pkl"
+        lag=5
     else:
         model_type = "tumor_model.pkl"
+        lag=7
 
     # Load model
     model_path = os.path.join(os.path.dirname(__file__), "models", model_type)

@@ -46,11 +46,17 @@ async def merge_epitopes(file_paths):
                 print(f"Warning: {file_path} is empty.")
                 continue
             # Determine cell type based on filename
-            cell_type = file_path.split('/')[-1].split('_')[-1][:-4]
-            print(cell_type)
+            software_type = file_path.split('/')[-1].split('_')[-1][:-4]
+            print(software_type)
+            if software_type == 'abcpred':
+                cell_type = 'BCell'
+            elif software_type == 'netctl'or software_type == 'netmhcI':
+                cell_type = 'CTLCell'
+            elif software_type == 'netmhcII':
+                cell_type = 'HTCell'
             # Add cell type column
+            df['Software Type'] = software_type
             df['Cell Type'] = cell_type
-
             # Handle missing columns for non-TH types
             # if cell_type != 'TH(IFN)':
             #     for col in ['Result', 'Allele', 'IFN_Gamma']:
@@ -58,7 +64,7 @@ async def merge_epitopes(file_paths):
             #             df[col] = 'NA'
 
             # Reorder columns for consistent output
-            df = df[['Cell Type', 'Protein ID', 'Epitope', 'Allergen Test', 'Toxicity Test', 'Antigen Test', 'Score']]
+            df = df[['Software Type', 'Cell Type', 'Protein ID', 'Epitope', 'Allergen Test', 'Toxicity Test', 'Antigen Test']]
             # df = df[['Cell Type', 'Protein ID', 'Epitope', 'Allergen Test', 'Toxicity Test', 'Antigen Test', 'Score', 'Allele', 'Result', 'IFN_Gamma']]
 
         except FileNotFoundError:

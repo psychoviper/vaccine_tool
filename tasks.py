@@ -43,7 +43,7 @@ def batch_processing(input_file, user_id, data):
     #     total_sequences = max_sequences
     total_sequences = end-start+1
 
-    batch_size = 500  # Adjust batch size based on performance
+    batch_size = 250  # Adjust batch size based on performance
     num_batches = math.ceil(total_sequences / batch_size)
     print(f"\nProcessing {total_sequences} sequences in {num_batches} batches.")
 
@@ -83,6 +83,7 @@ async def scrape_all_tools(batch, batch_index, batch_fasta_path, url_allergen, u
         ]
         results = await asyncio.gather(*tasks)
     df = pd.read_csv(input_file)
+    print("Results from all tools:", results)
     for result, batch_index, col in results:
         batch_start = batch_index * batch
         for i, row_index in enumerate(range(batch_start, min(batch_start + batch, total_sequences))):
@@ -144,6 +145,7 @@ def process_epitope_batch(user_id,bcell_csv, ctl_csv, th_csv, th_ifn, values):
 # -------------------------- ASYNC Epitope Batch PROCESSING ---------------------------#
 async def process_all_epitopes(user_id, bcell_csv, ctl_csv, th_csv, th_ifn, values):
     print("Scrapes antigenicity, toxicity, and Antigenicity concurrently")
+    # Create a temporary directory
     tasks = [
         epitope_processing(bcell_csv, user_id, 'bCell', values),
         epitope_processing(ctl_csv, user_id, 'CTH', values),
@@ -151,6 +153,7 @@ async def process_all_epitopes(user_id, bcell_csv, ctl_csv, th_csv, th_ifn, valu
         epitope_processing(th_ifn, user_id, 'IFN', values),
     ]
     results = await asyncio.gather(*tasks)
+    
     return results
 # ----------------------------------||--------------------------------------------------
 # -------------------------- BATCH PROCESSING FOR SEQUENCES FUNCTION ---------------------------#
@@ -159,11 +162,10 @@ async def epitope_processing(input_file, user_id, type, values):
     # max_sequences=
     # if total_sequences is None or total_sequences > max_sequences:
     total_sequences = len(df)
-    batch_size = 500
+    batch_size = 250
     num_batches = math.ceil(total_sequences / batch_size)
     print(f"\nProcessing {type} {total_sequences} sequences in {num_batches} batches of {batch_size} sequences each.")
     
-    # Create a temporary directory
     dir_path = f"user_data/{user_id}"
     os.makedirs(dir_path, exist_ok=True)
 

@@ -18,7 +18,7 @@
       <nav class="main-nav">
         <ul>
           <li><a id="backToHome">Home</a></li>
-          <li><a href="#" id="navdocumentation">Documentation</a></li>
+          <li><a href="#" id="navdocumentation">Docs</a></li>
           <!-- <li><a href="#" id="navdownloads">Downloads</a></li> -->
         </ul>
       </nav>
@@ -260,7 +260,7 @@
                   <button class="substep-btn active" data-substep="3_1">ABCPred</button>
                   <button class="substep-btn" data-substep="3_2">NetCTL</button>
                   <button class="substep-btn" data-substep="3_3">NetMHC-I</button>
-                  <button class="substep-btn" data-substep="3_4">NetMHC-II (Optional)</button>
+                  <button class="substep-btn" data-substep="3_4">NetMHC-II</button>
                 </div>
                 
                 <div class="substep-content">
@@ -313,7 +313,7 @@
                       <input type="range" id="netctl-tap-efficiency" min="0" max="1" step="0.05" value="0.05">
                       <span id="netctl-tap-efficiency-value">0.05</span>
                       <label for="netctl-threshold">Threshold Value</label>
-                      <input type="range" id="netctl-threshold" min="0" max="2" step="0.1" value="0.75">
+                      <input type="range" id="netctl-threshold" min="0" max="1" step="0.05" value="0.75">
                       <span id="netctl-threshold-value">0.75</span>
                     </div>
                     <div class="action-buttons">
@@ -342,7 +342,7 @@
                     <div class="form-group">
                       <label for="netmhci-length">Peptide Length</label>
                       <select id="netmhci-length">
-                        <option value="8">8mer peptides</option>
+                        <!-- <option value="8">8mer peptides</option> -->
                         <option value="9" selected>9mer peptides</option>
                         <option value="10">10mer peptides</option>
                         <option value="11">11mer peptides</option>
@@ -353,10 +353,10 @@
                     </div>
                     <div class="form-group">
                       <label for="netmhci-strong-threshold">Threshold for strong binders: % Rank</label>
-                      <input type="range" id="netmhci-strong-threshold" min="0.50" max="100" step="0.5" value="0.50">
+                      <input type="range" id="netmhci-strong-threshold" min="0.50" max="10" step="0.5" value="0.50">
                       <span id="netmhci-strong-threshold-value">0.50</span>
                       <label for="netmhci-weak-threshold">Threshold for weak binders: % Rank</label>
-                      <input type="range" id="netmhci-weak-threshold" min="0.50" max="100" step="0.5" value="2.0">
+                      <input type="range" id="netmhci-weak-threshold" min="0.50" max="10" step="0.5" value="2.0">
                       <span id="netmhci-weak-threshold-value">2.0</span>
                     </div>
                     <div class="action-buttons">
@@ -385,7 +385,7 @@
                     <div class="form-group">
                       <label for="netmhcii-length">Peptide Length</label>
                       <select id="netmhcii-length">
-                        <option value="8">8</option>
+                        <!-- <option value="8">8</option> -->
                         <option value="9">9</option>
                         <option value="10">10</option>
                         <option value="11">11</option>
@@ -397,10 +397,10 @@
                     </div>
                     <div class="form-group">
                       <label for="netmhcii-strong-threshold">Threshold for strong binders: % Rank</label>
-                      <input type="range" id="netmhcii-strong-threshold" min="0.50" max="100" step="0.5" value="1.0">
+                      <input type="range" id="netmhcii-strong-threshold" min="0.50" max="10" step="0.5" value="1.0">
                       <span id="netmhcii-strong-threshold-value">1.0</span>
                       <label for="netmhcii-weak-threshold">Threshold for weak binders: % Rank</label>
-                      <input type="range" id="netmhcii-weak-threshold" min="0.50" max="100" step="0.5" value="5.0">
+                      <input type="range" id="netmhcii-weak-threshold" min="0.50" max="10" step="0.5" value="5.0">
                       <span id="netmhcii-weak-threshold-value">5.0</span>
                     </div>
                     <div class="action-buttons">
@@ -435,7 +435,7 @@
                   </div>
                 </div>
                 
-                <div class="epitope-table-container">
+                <!-- <div class="epitope-table-container">
                   <h4>Top Predicted Epitopes</h4>
                   <table class="data-table" id="epitopeTable">
                     <thead>
@@ -448,10 +448,9 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- Table will be populated by JavaScript -->
                     </tbody>
                   </table>
-                </div>
+                </div> -->
                 
                 <div class="action-buttons">
                   <button class="btn secondary" id="downloadStep3">Download Results</button>
@@ -1033,7 +1032,7 @@
               <!-- </section> -->
               <br>
               <br>
-              <button class="btn outline" id="goBackToStep4">Step 4</button>
+              <button class="btn outline" id="goBackToStep4">Back</button>
             </div>
           </section>
         </div>

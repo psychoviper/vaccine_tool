@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniVax - About</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Gemunu+Libre:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4dd7d93d54.js" crossorigin="anonymous"></script>
+    <style>
+        /* CSS specific to the About Page - Reusing Privacy Policy Styles */
+        /* Ensure the active link in the footer is styled correctly */
+        .footer-center a.active {
+            color: black;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.4rem;
+        }
+
+        /* Reusing common scientific container and hero styles */
+        .scientific-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 6rem 3rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .about-hero-scientific {
+            /* Specific hero for about page */
+            background: linear-gradient(to bottom, rgb(228, 241, 239), rgb(255, 255, 255));
+            padding: 5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .about-hero-scientific h1 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 800;
+            font-size: 6rem;
+            color: #262626;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.05rem;
+        }
+
+        .about-hero-scientific p {
+            font-family: "Inter", sans-serif;
+            font-size: 2.4rem;
+            color: #71717a;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Accordion Item Styling (Copied from privacy policy, ensure consistency) */
+        .accordion-item {
+            border: 1px solid #e0e0e0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 2.5rem;
+            background-color: #f7f7f7;
+            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-header {
+            background-color: #e8f3f1;
+        }
+
+        .accordion-header:hover {
+            background-color: #eef8f6;
+        }
+
+        .accordion-header h2 {
+            flex-grow: 1;
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            color: rgba(106, 71, 131, 255);
+            margin: 0;
+            padding-left: 0;
+            position: relative;
+        }
+
+        .accordion-header h2 i {
+            font-size: 3rem;
+            margin-right: 15px;
+            color: #9b6eb6;
+        }
+
+        .accordion-icon {
+            font-size: 3.2rem;
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(90deg);
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 2.5rem;
+            background-color: #fff;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 2500px;
+            /* Increased to accommodate more content and new card layout */
+            padding: 2.5rem;
+        }
+
+        /* Content inside accordion */
+        .accordion-content p,
+        .accordion-content ul,
+        .accordion-content ol {
+            font-family: "Inter", sans-serif;
+            font-size: 2rem;
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            text-align: left;
+            /* Keep general content left-aligned */
+        }
+
+        .accordion-content h3 {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 600;
+            font-size: 2.8rem;
+            color: #333;
+            margin-top: 2.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content ul li,
+        .accordion-content ol li {
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content ul,
+        .accordion-content ol {
+            padding-left: 3rem;
+        }
+
+        .accordion-content ul li {
+            list-style-type: disc;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content ol li {
+            list-style-type: decimal;
+            margin-bottom: 1.2rem;
+        }
+
+        .accordion-content a {
+            color: rgba(106, 71, 131, 255);
+            text-decoration: underline;
+        }
+
+        .citation-box {
+            background-color: #f0f8ff;
+            border-left: 5px solid rgba(106, 71, 131, 255);
+            padding: 2rem 2.8rem;
+            margin-top: 3rem;
+            font-family: "Inter", sans-serif;
+            font-size: 2rem;
+            color: #2a5270;
+            text-align: left;
+            /* Keep citation box left-aligned */
+        }
+
+        .citation-box p {
+            margin-bottom: 1rem;
+        }
+
+        .citation-box strong {
+            color: rgba(106, 71, 131, 255);
+        }
+
+        /* UPDATED: Flex Card Styles */
+        .tool-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-card {
+            background-color: #fcfdfe;
+            border: 1px solid #dcdcdc;
+            border-radius: 0.8rem;
+            padding: 3rem;
+            flex: 1 1 calc(50% - 1.25rem);
+            max-width: calc(50% - 1.25rem);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            cursor: pointer;
+            /* NEW: Indicates it's clickable */
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .tool-card .card-icon-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        .tool-card .card-icon {
+            font-size: 5.5rem;
+            color: rgba(106, 71, 131, 255);
+        }
+
+        .card-title {
+            font-family: "IBM Plex Sans", sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            color: #262626;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-info {
+            font-family: "Inter", sans-serif;
+            font-size: 1.8rem;
+            color: #555;
+            line-height: 1.7;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+            /* Adjusted margin since link is gone */
+        }
+
+        .card-info strong {
+            color: #333;
+            display: block;
+            margin-bottom: 0.8rem;
+            font-size: 2rem;
+        }
+
+        /* Removed .card-website-link styles */
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .scientific-container {
+                padding: 4rem 1.5rem;
+            }
+
+            .about-hero-scientific h1 {
+                font-size: 4.8rem;
+            }
+
+            .about-hero-scientific p {
+                font-size: 2.2rem;
+            }
+
+            .accordion-header {
+                padding: 1.8rem 2rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2.6rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2.5rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.8rem;
+            }
+
+            .accordion-content {
+                padding: 0 2rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 2rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.8rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 2.4rem;
+            }
+
+            .tool-card {
+                flex: 1 1 calc(50% - 1.25rem);
+                max-width: calc(50% - 1.25rem);
+                padding: 2.5rem;
+            }
+
+            .card-icon {
+                font-size: 5rem;
+            }
+
+            .card-title {
+                font-size: 2.6rem;
+            }
+
+            .card-info {
+                font-size: 1.7rem;
+            }
+
+            .card-info strong {
+                font-size: 1.8rem;
+            }
+
+            .citation-box {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .scientific-container {
+                padding: 3rem 1rem;
+            }
+
+            .about-hero-scientific h1 {
+                font-size: 4rem;
+            }
+
+            .about-hero-scientific p {
+                font-size: 2rem;
+            }
+
+            .accordion-item {
+                margin-bottom: 1.5rem;
+            }
+
+            .accordion-header {
+                padding: 1.5rem 1.8rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2.2rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.5rem;
+            }
+
+            .accordion-content {
+                padding: 0 1.8rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.8rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.7rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 2.2rem;
+            }
+
+            .tool-card {
+                flex: 1 1 100%;
+                max-width: 100%;
+                padding: 2rem;
+            }
+
+            .card-icon {
+                font-size: 4.5rem;
+            }
+
+            .card-title {
+                font-size: 2.4rem;
+            }
+
+            .card-info {
+                font-size: 1.6rem;
+            }
+
+            .card-info strong {
+                font-size: 1.7rem;
+            }
+
+            .citation-box {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-hero-scientific h1 {
+                font-size: 3.2rem;
+            }
+
+            .about-hero-scientific p {
+                font-size: 1.8rem;
+            }
+
+            .accordion-header {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .accordion-header h2 {
+                font-size: 2rem;
+            }
+
+            .accordion-header h2 i {
+                font-size: 2rem;
+            }
+
+            .accordion-icon {
+                font-size: 2.2rem;
+            }
+
+            .accordion-content {
+                padding: 0 1.5rem;
+            }
+
+            .accordion-item.open .accordion-content {
+                padding: 1.5rem;
+            }
+
+            .accordion-content p,
+            .accordion-content ul,
+            .accordion-content ol {
+                font-size: 1.6rem;
+            }
+
+            .accordion-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .tool-card {
+                padding: 1.5rem;
+            }
+
+            .card-icon {
+                font-size: 4rem;
+            }
+
+            .card-title {
+                font-size: 2.2rem;
+            }
+
+            .card-info {
+                font-size: 1.5rem;
+            }
+
+            .card-info strong {
+                font-size: 1.6rem;
+            }
+
+            .citation-box {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar">
+        <div id="navbarLogo">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo">
+            <span id="navbarTitle">
+                <span id="navbarTitle1">Uni</span>
+                <span id="navbarTitle2">Vax</span>
+            </span>
+        </div>
+        <div id="navbarMenu">
+            <div><a href="{{ url_for('index') }}">Home</a></div>
+            <div><a href="{{ url_for('documentation') }}">Documentation</a></div>
+            <div><a href="{{ url_for('about') }}" class="active">About</a></div>
+        </div>
+        <div id="navbarStart">
+            <button>Start Analysis</button>
+        </div>
+    </div>
+
+    <div class="about-hero-scientific">
+        <h1>About</h1>
+        <p>UniVax is an advanced computational framework for accelerated vaccine candidate screening and
+            immunoinformatics analysis.</p>
+    </div>
+
+    <div class="scientific-container">
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-microscope"></i>Introduction</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>UniVax is an integrated, automated bioinformatics platform designed to facilitate
+                    vaccine candidate screening through a unified interface. It orchestrates a pipeline of
+                    well-established immunoinformatics tools and public databases to streamline the process of epitope
+                    prediction, allergenicity and antigenicity evaluation, toxicity assessment, and structural feature
+                    detection.</p>
+                <p>The primary purpose of UniVax is to accelerate early-stage computational vaccine research by
+                    significantly reducing the manual burden associated with multi-tool workflows. It eliminates the
+                    need
+                    to interact with various web servers independently by providing a single-point interface that
+                    automates the entire process, from sequence input to comprehensive result aggregation.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-flask"></i>Scientific Motivation</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>The modern landscape of vaccine design demands robust computational frameworks capable of rapidly and
+                    reliably identifying immunogenic regions from target protein sequences. While traditional wet-lab
+                    procedures are inherently time-intensive and resource-demanding, *in silico* methods offer an
+                    efficient avenue for early triaging of potential vaccine targets based on their predicted
+                    immunogenic potential and safety profiles.</p>
+                <p>However, a significant challenge persists: existing immunoinformatics tools are often disparate,
+                    hosted on different web platforms, and frequently necessitate distinct input formats and result
+                    parsing methodologies. This fragmentation often leads to redundant manual effort for researchers in
+                    data conversion, submission, and result interpretation. UniVax was developed to directly address
+                    this
+                    critical bottleneck by automating the entire analysis pipeline, ensuring reproducibility, and
+                    aggregating diverse results into a clean, interpretable, and consolidated format.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-cogs"></i>Methodology</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>UniVax employs a streamlined, four-stage analytical workflow:</p>
+                <ol>
+                    <li>Sequence Submission: Users upload a protein sequence in standard FASTA format.
+                    </li>
+                    <li>Automated Tool Orchestration: The system initiates automated submissions to
+                        multiple, integrated bioinformatics tools via secure web scraping and API communication
+                        protocols.</li>
+                    <li>Parallelized Analysis: Each invoked tool performs its specialized analysis
+                        (e.g., allergenicity prediction, T-cell epitope mapping, transmembrane domain identification) in
+                        a
+                        parallelized fashion.</li>
+                    <li>Result Aggregation & Visualization: Processed results are parsed, unified, and
+                        presented through an intuitive, interactive user interface. Users can subsequently download
+                        refined outputs or filter predictions based on various biophysical and immunological parameters.
+                    </li>
+                </ol>
+                <p>Crucially, UniVax operates without requiring user login or collection of personal data. Your uploaded
+                    FASTA sequence is strictly stored temporarily for the duration of the analysis session and is not
+                    retained.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-tools"></i>Integrated Computational Resources</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>A core strength of UniVax lies in its robust integration and orchestration of best-in-class,
+                    open-access immunoinformatics tools. These resources, developed and maintained by leading academic
+                    and scientific institutions globally, represent the gold standard in their respective domains of
+                    computational vaccine design. UniVax functions as an intelligent wrapper, neither replicating nor
+                    modifying the underlying algorithms of these tools, but rather automating the interaction with them
+                    to generate consistent, consolidated analytical results.</p>
+                <p>We extend our sincere gratitude and acknowledgement to the developers and maintainers of the
+                    following
+                    foundational tools. We strongly emphasize the critical importance of citing each original source
+                    explicitly when utilizing UniVax-generated results for any academic, research, or publication
+                    purposes:</p>
+
+                <div class="tool-card-container">
+                    <div class="tool-card" data-link="https://webs.iiitd.edu.in/raghava/algpred2/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-allergies card-icon"></i>
+                        </div>
+                        <h3 class="card-title">AlgPred 2.0</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Dr. G.P.S. Raghava’s Group<br>
+                            <strong>Function:</strong> Predicts allergenic potential using diverse classifiers and
+                            datasets, crucial for safety assessment.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="http://www.ddg-pharmfac.net/vaxijen/VaxiJen/VaxiJen.html">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-virus card-icon"></i>
+                        </div>
+                        <h3 class="card-title">VaxiJen v2.0</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Dr. David S. Moss and team<br>
+                            <strong>Function:</strong> Employs alignment-independent prediction of protective antigens,
+                            assessing overall antigenicity.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="https://phobius.sbc.su.se/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-stream card-icon"></i>
+                        </div>
+                        <h3 class="card-title">Phobius</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Stockholm Bioinformatics Center<br>
+                            <strong>Function:</strong> Predicts transmembrane topology and signal peptides within
+                            protein sequences.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="https://www.iedb.org/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-shield-virus card-icon"></i>
+                        </div>
+                        <h3 class="card-title">IEDB Tools</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong>La Jolla
+                            Institute for Immunology<br>
+                            <strong>Function:</strong> Predicts CD8+ CTL epitopes, MHC class I & II binding affinities,
+                            and B-cell linear epitopes.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="https://webs.iiitd.edu.in/raghava/abcpred/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-virus card-icon"></i>
+
+                        </div>
+                        <h3 class="card-title">ABCPred</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Dr. G.P.S. Raghava’s Group<br>
+                            <strong>Function:</strong> Predicts B-cell epitopes using advanced recurrent neural network
+                            architectures.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="https://services.healthtech.dtu.dk/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-hand-fist card-icon"></i>
+                        </div>
+                        <h3 class="card-title">NetCTL & NetMHCpan</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Technical University of Denmark<br>
+                            <strong>Function:</strong> Predicts CTL epitopes & specific MHC
+                            binding capabilities.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="https://services.healthtech.dtu.dk/services/NetMHCIIpan-4.0/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-hands-holding-circle card-icon"></i>
+                        </div>
+                        <h3 class="card-title">NetMHCIIpan</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Technical University of Denmark<br>
+                            <strong>Function:</strong> Predicts peptide binding to MHC Class II molecules, vital for
+                            helper T-cell responses.
+                        </div>
+                    </div>
+
+                    <div class="tool-card" data-link="https://webs.iiitd.edu.in/raghava/toxinpred/">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-skull-crossbones card-icon"></i>
+                        </div>
+                        <h3 class="card-title">ToxinPred</h3>
+                        <div class="card-info">
+                            <strong>Developed by:</strong> Dr. G.P.S. Raghava’s Group<br>
+                            <strong>Function:</strong> Predicts the toxicity of peptides and proteins, crucial for
+                            ensuring vaccine safety.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-plus-circle"></i>Future Enhancements</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>UniVax is designed with scalability in mind, and our development roadmap includes the integration of
+                    additional crucial immunoinformatics functionalities. Future modules will transparently display the
+                    specific tools invoked, along with all requisite citation information. Planned enhancements include:
+                </p>
+                <ul>
+                    <li>Toxicity screening and pharmacokinetics prediction.</li>
+                    <li>Advanced structural modeling and protein-ligand interaction analysis.</li>
+                    <li>Comprehensive population coverage analysis for global vaccine applicability.</li>
+                    <li>Automated multi-epitope vaccine construct design and optimization.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2 class="section-title"><i class="fas fa-book-reader"></i>Mandatory Scientific Citation</h2>
+                <i class="fas fa-chevron-right accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+                <p>All analytical results generated via the UniVax platform are intrinsically derived from and dependent
+                    upon third-party scientific tools and public databases. While UniVax provides a streamlined
+                    interface
+                    for automation and visualization of these complex processes, the intellectual property and
+                    fundamental
+                    scientific contribution unequivocally belong to the original authors and research groups who
+                    developed
+                    these foundational tools.</p>
+                <div class="citation-box">
+                    <p>If you utilize UniVax-generated results in any scholarly work (e.g., academic
+                        publications, conference posters, presentations, or research reports), it is an ethical and
+                        mandatory scientific responsibility to properly acknowledge and cite the original authors,
+                        their associated publications, and the official websites of each specific tool or database that
+                        contributed to your analysis. This practice is paramount for ensuring appropriate
+                        academic credit and fostering the continued development and dissemination of high-impact
+                        bioinformatics software and resources.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer id="footer">
+        <div class="footer-left">
+            <p>&copy; 2025 UniVax. All Rights Reserved</p>
+        </div>
+        <div class="footer-center">
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="#">GitHub</a>
+        </div>
+    </footer>
+
+    <script>
+        const startButton = document.getElementById('navbarStart');
+        startButton.addEventListener('click', function() {
+            window.location.href = '/analysis';  
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function () {
+                    const accordionItem = this.closest('.accordion-item');
+                    const accordionContent = this.nextElementSibling;
+                    const icon = this.querySelector('.accordion-icon');
+
+                    accordionItem.classList.toggle('open');
+
+                    if (accordionItem.classList.contains('open')) {
+                        accordionContent.style.maxHeight = accordionContent.scrollHeight + 30 + "px";
+                        icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+                    } else {
+                        accordionContent.style.maxHeight = "0";
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+                    }
+                });
+            });
+
+            // NEW JAVASCRIPT FOR CLICKABLE CARDS
+            const toolCards = document.querySelectorAll('.tool-card');
+
+            toolCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    const link = this.dataset.link; // Get the URL from the data-link attribute
+                    if (link) {
+                        window.open(link, '_blank'); // Open the link in a new tab
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
