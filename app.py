@@ -22,23 +22,6 @@ app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-RESULT_PAGE_TEMPLATE = """
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="refresh" content="60">
-    <title>Task Status</title>
-</head>
-<body>
-    <h2>Task Status: {{ status }}</h2>
-    {% if result is not none %}
-        <p>Result: {{ result }}</p>
-    {% else %}
-        <p>Waiting for result... Refreshing in 2 seconds.</p>
-    {% endif %}
-</body>
-</html>
-"""
 COUNTER_FILE = "counter.txt"
 
 # Initialize counter file if not exists
@@ -90,39 +73,39 @@ async def process_file():
         return None
 
 
-@app.route("/result/<task_id>/<step>/<dir_path>")
-async def get_result(task_id, step, dir_path):
-    """Fetch task result and display with auto-refresh."""
-    task = celery.AsyncResult(task_id)
-    print(task.state)
-    if task.state == "PENDING":
-        return await render_template(
-            step,
-            processing=True,
-            id=task_id,
-            file_processed=True,
-            processed_filename=session.get('processed_filename',''),
-            error_message=session.get('error_message'),
-        )
-        # return await render_template_string(RESULT_PAGE_TEMPLATE, status="PENDING", result=None), 202
-    else:
-        if os.path.exists(dir_path) and os.path.isdir(dir_path):  
-            os.rmdir(dir_path)
-        if task.state == "SUCCESS":
-            session['file_processed'] = True
-            session['processed_filename'] = session['converted_filename']
-            return await render_template(
-                step,
-                processing=False,
-                file_processed=session.get('file_processed'),
-                processed_filename=session.get('processed_filename'),
-                error_message=session.get('error_message')
-            )
-            # return await render_template_string(RESULT_PAGE_TEMPLATE, status="SUCCESS", result=task.result), 200
-        elif task.state == "FAILURE":
-            return await render_template_string(RESULT_PAGE_TEMPLATE, status="FAILURE", result="Error"), 500
-        else:
-            return await render_template_string(RESULT_PAGE_TEMPLATE, status=task.state, result=None), 202
+# @app.route("/result/<task_id>/<step>/<dir_path>")
+# async def get_result(task_id, step, dir_path):
+#     """Fetch task result and display with auto-refresh."""
+#     task = celery.AsyncResult(task_id)
+#     print(task.state)
+#     if task.state == "PENDING":
+#         return await render_template(
+#             step,
+#             processing=True,
+#             id=task_id,
+#             file_processed=True,
+#             processed_filename=session.get('processed_filename',''),
+#             error_message=session.get('error_message'),
+#         )
+#         # return await render_template_string(RESULT_PAGE_TEMPLATE, status="PENDING", result=None), 202
+#     else:
+#         if os.path.exists(dir_path) and os.path.isdir(dir_path):  
+#             os.rmdir(dir_path)
+#         if task.state == "SUCCESS":
+#             session['file_processed'] = True
+#             session['processed_filename'] = session['converted_filename']
+#             return await render_template(
+#                 step,
+#                 processing=False,
+#                 file_processed=session.get('file_processed'),
+#                 processed_filename=session.get('processed_filename'),
+#                 error_message=session.get('error_message')
+#             )
+#             # return await render_template_string(RESULT_PAGE_TEMPLATE, status="SUCCESS", result=task.result), 200
+#         elif task.state == "FAILURE":
+#             return await render_template_string(RESULT_PAGE_TEMPLATE, status="FAILURE", result="Error"), 500
+#         else:
+#             return await render_template_string(RESULT_PAGE_TEMPLATE, status=task.state, result=None), 202
 
 
 @app.route('/task_status/<task_id>/<step>', methods=['GET'])
@@ -316,6 +299,7 @@ async def step2():
     print("step2")
     form_data = request.get_json()
     if request.method == 'POST':
+        print(session)
         csv_path = os.path.join(app.config['OUTPUT_FOLDER'], session['converted_filename'])
         print(request)
         # form_data = await request.form  # Quart automatically makes it async
