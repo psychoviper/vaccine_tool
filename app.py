@@ -250,14 +250,8 @@ async def analysis():
 async def upload():
     session['step'] = 1 
     if request.method == 'POST':
+        print('step1')
         files = await request.files
-        # form_data = await request.form
-        # print(form_data)
-        # if 'default' in form_data:
-        #     filename = 'default_file.fa'
-        #     file_path = os.path.join(app.config['UPLOAD_FOLDER'],filename)
-        #     session['file_path'] = file_path
-        # else:
         file = files.get("file")
         if not file or file.filename == "":
             abort(400, description="No file was uploaded. Please go back and upload a fasta file.")
@@ -268,7 +262,9 @@ async def upload():
         await file.save(file_path)
         session['file_path'] = file_path
         try:
+            print(session)
             session['converted_filename'] = f"{session['user_id']}.csv"
+            print(session)
             # converted_filename=f"{session['user_id']}.csv"
             if not os.path.exists(file_path):
                 print(f"Error: Input file '{file_path}' does not exist!")

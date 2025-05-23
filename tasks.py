@@ -42,7 +42,8 @@ def batch_processing(input_file, user_id, data):
     # if total_sequences is None or total_sequences > max_sequences:
     #     total_sequences = max_sequences
     total_sequences = end-start+1
-
+    start = start-1
+    print("Start and End",start, end)
     batch_size = 250  # Adjust batch size based on performance
     num_batches = math.ceil(total_sequences / batch_size)
     print(f"\nProcessing {total_sequences} sequences in {num_batches} batches.")
@@ -83,7 +84,7 @@ async def scrape_all_tools(batch, batch_index, batch_fasta_path, url_allergen, u
         ]
         results = await asyncio.gather(*tasks)
     df = pd.read_csv(input_file)
-    print("Results from all tools:", results)
+    # print("Results from all tools:", results)
     for result, batch_index, col in results:
         batch_start = batch_index * batch
         for i, row_index in enumerate(range(batch_start, min(batch_start + batch, total_sequences))):

@@ -35,10 +35,10 @@ def predict_antigens(prediction_type: str, sequence_input: str, lag=8):
 
     fasta_sequences = parse_fasta_sequences(sequence_input)
     
+    results=[]
     try:
         # Process the input data
         if fasta_sequences:
-            results=[]
             for item in fasta_sequences:
             # sequence = fasta_data.split()[-1]  # Get the last sequence from the input
                 sequence = item["sequence"]

@@ -14,7 +14,7 @@ async def scrape_allergen(session, batch_length, batch_index, batch_fasta_path, 
         "terminus": int(method), 
         "svm_th": float(selected_value)
     }
-
+    print("Allergen payload->",payload)
     try:
         async with session.post(url, data=payload) as response:
             html = await response.text()
